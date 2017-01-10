@@ -1,0 +1,4 @@
+inc_requests_available:
+  cron: "* * * * *"
+  class: IncRequestsAvailableJob
+  queue: default
