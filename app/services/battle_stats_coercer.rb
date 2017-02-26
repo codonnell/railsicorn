@@ -3,7 +3,7 @@ class BattleStatsCoercer
     @response = response
   end
 
-  def coerce
+  def call
     @response.map { |k, v| coerce_pair(k, v) }.to_h.slice(*valid_keys)
   end
 

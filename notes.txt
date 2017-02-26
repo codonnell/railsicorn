@@ -25,3 +25,7 @@ Plan of action: TDD!!!!
 Write api querier; get api key submission, battle stats updates, and attack updates first. Personal stats last.
 Test using an http request mocking library of some kind.
 Interface with these api-facing functions by POROs with well-defined responsibilities. Eg. A Registrar class is responsible for registering new users. There should be a set of classes responsible for validating and parsing responses.
+
+How should user info validation work?
+We need to validate the response, add missing keys with default values, coerce values, and change the key names.
+Validating the response, adding missing keys with default values, and coercing values can be accomplished with dry-struct.

@@ -1,0 +1,2 @@
+class ApiDisabledError < StandardError
+end

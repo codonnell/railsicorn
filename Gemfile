@@ -25,9 +25,6 @@ gem 'puma', '~> 3.0'
 # Make HTTP requests
 gem 'rest-client', '~> 2.0'
 
-# Mock HTTP responses
-gem 'webmock', '~> 2.3'
-
 # Run recurrent tasks
 gem 'sidekiq', '~> 4.2'
 gem 'sidekiq-cron', '~> 0.4.0'
@@ -41,6 +38,13 @@ gem 'dry-validation', '~> 0.10'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+
+  # Create test data
+  gem 'factory_girl_rails', '~> 4.0'
+
+  # Mock HTTP responses
+  gem 'webmock', '~> 2.3'
+
 
   gem 'pry'
   gem 'pry-doc'

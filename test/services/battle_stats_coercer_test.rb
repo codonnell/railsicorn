@@ -27,7 +27,7 @@ class BattleStatsCoercerTest < ActiveSupport::TestCase
   test 'coerces modifiers' do
     assert_equal(
       coerced_response,
-      BattleStatsCoercer.new(orig_response).coerce
+      BattleStatsCoercer.new(orig_response).call
     )
   end
 end

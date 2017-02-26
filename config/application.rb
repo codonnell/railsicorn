@@ -31,5 +31,7 @@ module Railsicorn
     config.eager_load_paths += ["#{config.root}/app/workers"]
     config.autoload_paths += %W(#{config.root}/app/services)
     config.eager_load_paths += ["#{config.root}/app/services"]
+    config.autoload_paths += %W(#{config.root}/lib/errors)
+    config.eager_load_paths += ["#{config.root}/lib/errors"]
   end
 end

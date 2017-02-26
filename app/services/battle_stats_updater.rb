@@ -1,40 +1,30 @@
 class BattleStatsUpdater
-  def initialize(user)
-    @user = user
+  def initialize(api_caller, player)
+    @api_caller = api_caller
+    @player = player
   end
 
   def call
-    response = request_update
+    response = @api_caller.call
     validator = BattleStatsValidator.new(response)
     raise validator.errors.to_s if validator.invalid?
-    coerced = coerce(response)
-    add_id(coerced)
-    add_timestamp(coerced)
-    BattleStatsUpdate.create(coerced)
+    @response = coerce(response)
+    add_id
+    add_timestamp
+    BattleStatsUpdate.create(@response)
   end
 
-  # private
-
-  def request_update
-    caller = ApiCaller.new(@user)
-    begin
-      response = caller.battle_stats
-    rescue StandardError
-      raise 'Error connecting to server'
-    end
-    raise "API Error: #{response[:error]}" if response.key?(:error)
-    response
-  end
+  private
 
   def coerce(response)
-    BattleStatsCoercer.new(response).coerce
+    BattleStatsCoercer.new(response).call
   end
 
-  def add_id(response)
-    response[:player] = @user.player
+  def add_id
+    @response[:player] = @player
   end
 
-  def add_timestamp(response)
-    response[:timestamp] = DateTime.now
+  def add_timestamp
+    @response[:timestamp] = DateTime.now
   end
 end

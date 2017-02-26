@@ -1,0 +1,2 @@
+class EmptyKeyError < StandardError
+end

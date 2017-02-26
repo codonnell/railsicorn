@@ -1,0 +1,2 @@
+class IncorrectKeyError < StandardError
+end

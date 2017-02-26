@@ -17,10 +17,13 @@ class BattleStatsUpdaterTest < ActiveSupport::TestCase
       defense_info: ['+ 2% Defense from education']
     }
 
+
   test 'creates update with correct api response' do
     stub_request(:get, /.*api\.torn\.com.*/)
       .to_return(body: JSON.dump(valid_body))
-    updater = BattleStatsUpdater.new(users(:one))
+    api_caller = ApiCaller.new(ApiRequest.battle_stats(users(:one).api_key),
+      NoRateLimiter.new)
+    updater = BattleStatsUpdater.new(api_caller, players(:one))
     update = updater.call
     assert_equal(1.0, update.strength)
     assert_equal(1.1, update.strength_modifier)
@@ -28,25 +31,31 @@ class BattleStatsUpdaterTest < ActiveSupport::TestCase
     assert BattleStatsUpdate.find_by(timestamp: update.timestamp)
   end
 
-  test 'throw exception when request fails' do
+  test 'raise exception when request fails' do
     stub_request(:get, /.*api\.torn\.com.*/).to_timeout
-    updater = BattleStatsUpdater.new(users(:one))
+    api_caller = ApiCaller.new(ApiRequest.battle_stats(users(:one).api_key),
+      NoRateLimiter.new)
+    updater = BattleStatsUpdater.new(api_caller, players(:one))
     assert_raises(Exception) { updater.call }
   end
 
-  test 'throw exception on api error response' do
+  test 'raise exception on api error response' do
     body = JSON.dump(error: { code: 2, error: 'Incorrect Key' })
     stub_request(:get, /.*api\.torn\.com.*/).to_return(body: body)
-    updater = BattleStatsUpdater.new(users(:one))
+    api_caller = ApiCaller.new(ApiRequest.battle_stats(users(:one).api_key),
+      NoRateLimiter.new)
+    updater = BattleStatsUpdater.new(api_caller, players(:one))
     assert_raises(Exception) { updater.call }
   end
 
-  test 'throw exception on invalid response body' do
+  test 'raise exception on invalid response body' do
     invalid_body = valid_body.clone
     invalid_body[:strength] = 'foo'
     stub_request(:get, /.*api\.torn\.com.*/)
       .to_return(body: JSON.dump(invalid_body))
-    updater = BattleStatsUpdater.new(users(:one))
+    api_caller = ApiCaller.new(ApiRequest.battle_stats(users(:one).api_key),
+      NoRateLimiter.new)
+    updater = BattleStatsUpdater.new(api_caller, players(:one))
     assert_raises(Exception) { updater.call }
   end
 end

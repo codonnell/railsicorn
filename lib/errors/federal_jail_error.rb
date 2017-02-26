@@ -1,0 +1,2 @@
+class FederalJailError < StandardError
+end

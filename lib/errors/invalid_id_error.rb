@@ -1,0 +1,2 @@
+class InvalidIdError < StandardError
+end

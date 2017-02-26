@@ -21,4 +21,6 @@ Things you may want to cover:
 
 * Deployment instructions
 
+Railsicorn requires sidekiq to be running, which in turn requires a redis database. You can start redis with `redis-server` and sidekiq with `sidekiq`.
+
 * ...

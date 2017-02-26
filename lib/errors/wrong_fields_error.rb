@@ -1,0 +1,2 @@
+class WrongFieldsError < StandardError
+end

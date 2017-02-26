@@ -1,0 +1,2 @@
+class WrongTypeError < StandardError
+end
