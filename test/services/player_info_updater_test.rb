@@ -163,7 +163,7 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
   test 'creates update with correct api response' do
     stub_request(:get, /.*api\.torn\.com.*/)
       .to_return(body: JSON.dump(valid_body))
-    api_caller = ApiCaller.new(ApiRequest.player_info(users(:one).api_key, 99177),
+    api_caller = ApiCaller.new(ApiRequest.player_info('api_key', 99177),
       NoRateLimiter.new)
     updater = PlayerInfoUpdater.new(api_caller)
     update = updater.call
@@ -174,7 +174,7 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
 
   test 'throw exception when request fails' do
     stub_request(:get, /.*api\.torn\.com.*/).to_timeout
-    api_caller = ApiCaller.new(ApiRequest.player_info(users(:one).api_key, 99177),
+    api_caller = ApiCaller.new(ApiRequest.player_info('api_key', 99177),
       NoRateLimiter.new)
     updater = PlayerInfoUpdater.new(api_caller)
     assert_raises(Exception) { updater.call }
@@ -183,7 +183,7 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
   test 'throw exception on api error response' do
     body = JSON.dump(error: { code: 2, error: 'Incorrect Key' })
     stub_request(:get, /.*api\.torn\.com.*/).to_return(body: body)
-    api_caller = ApiCaller.new(ApiRequest.player_info(users(:one).api_key, 99177),
+    api_caller = ApiCaller.new(ApiRequest.player_info('api_key', 99177),
       NoRateLimiter.new)
     updater = PlayerInfoUpdater.new(api_caller)
     assert_raises(Exception) { updater.call }
@@ -194,7 +194,7 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
     invalid_body[:forum_posts] = 'foo'
     stub_request(:get, /.*api\.torn\.com.*/)
       .to_return(body: JSON.dump(invalid_body))
-    api_caller = ApiCaller.new(ApiRequest.player_info(users(:one).api_key, 99177),
+    api_caller = ApiCaller.new(ApiRequest.player_info('api_key', 99177),
       NoRateLimiter.new)
     updater = PlayerInfoUpdater.new(api_caller)
     assert_raises(Exception) { updater.call }

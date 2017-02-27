@@ -39,4 +39,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # In order to avoid testing issues
+  config.request_threads = 0
 end

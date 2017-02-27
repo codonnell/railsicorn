@@ -1,5 +1,6 @@
+require 'parallel'
+
 class AttacksUpdater
-  # should pass in ApiCaller here and that should be constructed with the endpoint it will hit. ApiCaller will then receive a call message and that's it.
   def initialize(api_caller)
     @api_caller = api_caller
   end
@@ -8,8 +9,11 @@ class AttacksUpdater
     response = @api_caller.call
     validator = AttacksValidator.new(response)
     raise validator.errors.to_s if validator.invalid?
-    @attacks = coerce(response)
-    @attacks.each { |attack| create(attack) unless exists?(attack) }
+    attacks = coerce(response)
+    new_attacks = attacks.map { |attack| new(attack) unless exists?(attack) }.compact
+    update_battle_stats(new_attacks)
+    save(new_attacks)
+    new_attacks
   end
 
   private
@@ -22,10 +26,10 @@ class AttacksUpdater
     Attack.find_by(torn_id: attack[:torn_id])
   end
 
-  def create(attack)
+  def new(attack)
     resolve_attacker_reference(attack)
     resolve_defender_reference(attack)
-    Attack.create(attack)
+    Attack.new(attack)
   end
 
   def resolve_attacker_reference(attack)
@@ -37,5 +41,27 @@ class AttacksUpdater
   def resolve_defender_reference(attack)
     attack[:defender] = Player.find_or_create_by(torn_id: attack[:defender_id])
     attack.delete :defender_id
+  end
+
+  def update_battle_stats(attacks)
+    pairs = attacks.map { |attack| [attack.attacker, attack.defender] }
+    players_to_update = Set.new(pairs.flatten.compact).select(&:active_user?)
+    Parallel.each(players_to_update,
+                  in_threads: Rails.application.config.request_threads) do |player|
+      request = ApiRequest.battle_stats(player.user.api_key)
+      api_caller = ApiCaller.new(request, RateLimiter.new(player.user))
+      BattleStatsUpdater.new(api_caller, player).call
+    end
+  end
+
+  def save(attacks)
+    attacks.each do |attack|
+      add_timestamp(attack)
+      attack.save
+    end
+  end
+
+  def add_timestamp(attack)
+    attack[:timestamp] = DateTime.now
   end
 end

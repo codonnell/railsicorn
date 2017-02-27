@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170226205104) do
+ActiveRecord::Schema.define(version: 20170226212340) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "attacks", force: :cascade do |t|
     t.integer  "torn_id"
@@ -20,8 +23,9 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.integer  "defender_id"
     t.string   "result"
     t.float    "respect_gain"
-    t.index ["attacker_id"], name: "index_attacks_on_attacker_id"
-    t.index ["defender_id"], name: "index_attacks_on_defender_id"
+    t.datetime "timestamp"
+    t.index ["attacker_id"], name: "index_attacks_on_attacker_id", using: :btree
+    t.index ["defender_id"], name: "index_attacks_on_defender_id", using: :btree
   end
 
   create_table "battle_stats_updates", force: :cascade do |t|
@@ -35,8 +39,8 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.float    "speed_modifier"
     t.float    "defense_modifier"
     t.integer  "player_id"
-    t.index ["player_id"], name: "index_battle_stats_updates_on_player_id"
-    t.index ["timestamp"], name: "index_battle_stats_updates_on_timestamp"
+    t.index ["player_id"], name: "index_battle_stats_updates_on_player_id", using: :btree
+    t.index ["timestamp"], name: "index_battle_stats_updates_on_timestamp", using: :btree
   end
 
   create_table "factions", force: :cascade do |t|
@@ -75,14 +79,14 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.integer  "xan_taken"
     t.integer  "ecstasy_taken"
     t.integer  "times_traveled"
-    t.integer  "networth",                 limit: 8
+    t.bigint   "networth"
     t.integer  "refills"
     t.integer  "stat_enhancers_used"
     t.integer  "medical_items_used"
     t.integer  "weapons_bought"
     t.integer  "bazaar_customers"
     t.integer  "bazaar_sales"
-    t.integer  "bazaar_profit",            limit: 8
+    t.bigint   "bazaar_profit"
     t.integer  "points_bought"
     t.integer  "points_sold"
     t.integer  "items_bought_abroad"
@@ -91,7 +95,7 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.integer  "items_sent"
     t.integer  "auctions_won"
     t.integer  "auctions_sold"
-    t.integer  "money_mugged",             limit: 8
+    t.bigint   "money_mugged"
     t.integer  "attacks_stealthed"
     t.integer  "critical_hits"
     t.integer  "respect"
@@ -107,8 +111,8 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.integer  "bounties_placed"
     t.integer  "bounties_received"
     t.integer  "bounties_collected"
-    t.integer  "bounty_rewards",           limit: 8
-    t.integer  "bounties_spent",           limit: 8
+    t.bigint   "bounty_rewards"
+    t.bigint   "bounties_spent"
     t.integer  "revives"
     t.integer  "revives_received"
     t.integer  "trains_received"
@@ -166,8 +170,8 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.integer  "duke_contracts_completed"
     t.integer  "missions_completed"
     t.string   "name"
-    t.index ["player_id"], name: "index_player_info_updates_on_player_id"
-    t.index ["spouse_id"], name: "index_player_info_updates_on_spouse_id"
+    t.index ["player_id"], name: "index_player_info_updates_on_player_id", using: :btree
+    t.index ["spouse_id"], name: "index_player_info_updates_on_spouse_id", using: :btree
   end
 
   create_table "players", force: :cascade do |t|
@@ -177,8 +181,8 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.datetime "updated_at", null: false
     t.integer  "faction_id"
     t.datetime "signup"
-    t.index ["faction_id"], name: "index_players_on_faction_id"
-    t.index ["user_id"], name: "index_players_on_user_id"
+    t.index ["faction_id"], name: "index_players_on_faction_id", using: :btree
+    t.index ["user_id"], name: "index_players_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -187,8 +191,16 @@ ActiveRecord::Schema.define(version: 20170226205104) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "requests_available"
-    t.index ["api_key"], name: "index_users_on_api_key"
-    t.index ["faction_id"], name: "index_users_on_faction_id"
+    t.index ["api_key"], name: "index_users_on_api_key", using: :btree
+    t.index ["faction_id"], name: "index_users_on_faction_id", using: :btree
   end
 
+  add_foreign_key "attacks", "players", column: "attacker_id"
+  add_foreign_key "attacks", "players", column: "defender_id"
+  add_foreign_key "battle_stats_updates", "players"
+  add_foreign_key "player_info_updates", "players"
+  add_foreign_key "player_info_updates", "players", column: "spouse_id"
+  add_foreign_key "players", "factions"
+  add_foreign_key "players", "users"
+  add_foreign_key "users", "factions"
 end

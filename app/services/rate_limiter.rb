@@ -2,11 +2,10 @@ class RateLimiter
 
   def initialize(user)
     @user = user
-    @api_key = user.api_key
   end
 
   def request_available?
-    @user.reload.requests_available > 0
+    @user.requests_available > 0
   end
 
   # Inspired by Ruby Cookbook

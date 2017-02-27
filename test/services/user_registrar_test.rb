@@ -160,6 +160,23 @@ class UserRegistrarTest < ActiveSupport::TestCase
     }
   end
 
+  def battle_stats_body
+    {
+      strength: 1.0,
+      dexterity: 2.0,
+      speed: 3.0,
+      defense: 4.0,
+      strength_modifier: 10,
+      dexterity_modifier: 5,
+      speed_modifier: 0,
+      defense_modifier: -5,
+      strength_info: ['+ 2% Strength from education'],
+      dexterity_info: ['+ 2% Dexterity from education'],
+      speed_info: ['+ 2% Speed from education'],
+      defense_info: ['+ 2% Defense from education']
+    }
+  end
+
   def empty_key_resp
     { error: { code: 1, error: 'Key is empty' } }
   end
@@ -172,9 +189,13 @@ class UserRegistrarTest < ActiveSupport::TestCase
     'foo'
   end
 
-  test 'creates user, player, and faction on valid response' do
-    stub_request(:get, /.*api\.torn\.com.*/)
+  test 'creates user, player, faction, and battle stats on valid response' do
+    info_request = ApiRequest.player_info(api_key)
+    battle_stats_request = ApiRequest.battle_stats(api_key)
+    stub_request(:get, info_request.url)
       .to_return(body: JSON.dump(valid_resp))
+    stub_request(:get, battle_stats_request.url)
+      .to_return(body: JSON.dump(battle_stats_body))
     assert_nil(User.find_by(api_key: api_key))
     assert_nil(Faction.find_by(torn_id: 2013))
     assert_nil(Player.find_by(torn_id: 99177))
@@ -185,13 +206,32 @@ class UserRegistrarTest < ActiveSupport::TestCase
   end
 
   test 'does not overwrite existing user' do
-    stub_request(:get, /.*api\.torn\.com.*/)
+    info_request = ApiRequest.player_info(api_key)
+    battle_stats_request = ApiRequest.battle_stats(api_key)
+    stub_request(:get, info_request.url)
       .to_return(body: JSON.dump(valid_resp))
+    stub_request(:get, battle_stats_request.url)
+      .to_return(body: JSON.dump(battle_stats_body))
     faction = create(:faction)
     create(:user, api_key: api_key, faction_id: faction.id)
     assert_equal(faction.id, User.find_by(api_key: api_key).faction_id)
-    UserRegistrar.new(api_key)
+    UserRegistrar.new(api_key).call
     assert_equal(faction.id, User.find_by(api_key: api_key).faction_id)
+  end
+
+  test 'does overwrite existing player\'s user' do
+    info_request = ApiRequest.player_info(api_key)
+    battle_stats_request = ApiRequest.battle_stats(api_key)
+    stub_request(:get, info_request.url)
+      .to_return(body: JSON.dump(valid_resp))
+    stub_request(:get, battle_stats_request.url)
+      .to_return(body: JSON.dump(battle_stats_body))
+    player = create(:player, torn_id: 99177)
+    old_user = create(:user, player: player)
+    assert_not_equal(api_key, old_user.api_key)
+    UserRegistrar.new(api_key).call
+    assert_equal(api_key, player.reload.user.api_key)
+    assert_nil(User.find_by(api_key: old_user.api_key))
   end
 
   test 'nil on empty key' do
