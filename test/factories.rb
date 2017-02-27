@@ -1,7 +1,22 @@
 FactoryGirl.define do
+
+  factory :battle_stats_update do
+    strength 10.0
+    dexterity 10.0
+    speed 10.0
+    defense 10.0
+    strength_modifier 1.0
+    dexterity_modifier 1.0
+    speed_modifier 1.0
+    defense_modifier 1.0
+    timestamp { DateTime.now }
+    player
+  end
+
   sequence :attack_id do |n|
     n
   end
+
   factory :attack do
     torn_id { generate(:attack_id) }
     timestamp_started "2017-02-20 17:07:17"
@@ -11,6 +26,7 @@ FactoryGirl.define do
     result "Hospitalize"
     respect_gain 1.5
   end
+
   sequence :player_id do |n|
     n
   end

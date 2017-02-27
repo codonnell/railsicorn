@@ -12,6 +12,7 @@ class AttacksUpdater
     attacks = coerce(response)
     new_attacks = attacks.map { |attack| new(attack) unless exists?(attack) }.compact
     update_battle_stats(new_attacks)
+    update_difficulties(new_attacks)
     save(new_attacks)
     new_attacks
   end
@@ -52,6 +53,31 @@ class AttacksUpdater
       api_caller = ApiCaller.new(request, RateLimiter.new(player.user))
       BattleStatsUpdater.new(api_caller, player).call
     end
+  end
+
+  def update_difficulties(attacks)
+    attacks.each { |attack| update_difficulty(attack) }
+  end
+
+  def update_difficulty(attack)
+    return if attack.attacker.nil? || attack.attacker.total_battle_stats.nil?
+    attacker = attack.attacker
+    defender = attack.defender
+    if attack.loss? && new_strongest_defense(attacker, defender)
+      defender.update(most_stats_defended_against: attacker.total_battle_stats)
+    elsif attack.win? && new_weakest_attacker(attacker, defender)
+      defender.update(least_stats_beaten_by: attacker.total_battle_stats)
+    end
+  end
+
+  def new_strongest_defense(attacker, defender)
+    defender[:most_stats_defended_against].nil? ||
+      defender[:most_stats_defended_against] < attacker.total_battle_stats
+  end
+
+  def new_weakest_attacker(attacker, defender)
+    defender[:least_stats_beaten_by].nil? ||
+      defender[:least_stats_beaten_by] > attacker.total_battle_stats
   end
 
   def save(attacks)

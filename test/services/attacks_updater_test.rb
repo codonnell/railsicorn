@@ -37,24 +37,37 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
 
   def battle_stats_body
     {
-      strength: 1.0,
-      dexterity: 2.0,
-      speed: 3.0,
-      defense: 4.0,
-      strength_modifier: 10,
-      dexterity_modifier: 5,
+      strength: 10.0,
+      dexterity: 10.0,
+      speed: 10.0,
+      defense: 10.0,
+      strength_modifier: 0,
+      dexterity_modifier: 0,
       speed_modifier: 0,
-      defense_modifier: -5,
-      strength_info: ['+ 2% Strength from education'],
-      dexterity_info: ['+ 2% Dexterity from education'],
-      speed_info: ['+ 2% Speed from education'],
-      defense_info: ['+ 2% Defense from education']
+      defense_modifier: 0,
+      strength_info: [],
+      dexterity_info: [],
+      speed_info: [],
+      defense_info: []
     }
   end
 
-  test 'creates valid attacks and their associated players' do
-    stub_request(:get, /.*api\.torn\.com.*/)
+  def stub_attack_requests
+    request = ApiRequest.player_attacks('api_key')
+    stub_request(:get, request.url)
       .to_return(body: JSON.dump(generic_attacks))
+    request
+  end
+
+  def stub_battle_stats_requests
+    battle_stats_request = ApiRequest.battle_stats('api_key')
+    stub_request(:get, battle_stats_request.url)
+      .to_return(body: JSON.dump(battle_stats_body))
+    battle_stats_request
+  end
+
+  test 'creates valid attacks and their associated players' do
+    stub_attack_requests
     api_caller = ApiCaller.new(ApiRequest.player_attacks('api_key'),
       NoRateLimiter.new)
     updater = AttacksUpdater.new(api_caller)
@@ -71,10 +84,8 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
   end
 
   test 'does not update existing attacks' do
-    stub_request(:get, /.*api\.torn\.com.*/)
-      .to_return(body: JSON.dump(generic_attacks))
-    api_caller = ApiCaller.new(ApiRequest.player_attacks('api_key'),
-      NoRateLimiter.new)
+    attack_request = stub_attack_requests
+    api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
     updater = AttacksUpdater.new(api_caller)
     create(:attack, torn_id: 1, attacker_id: nil)
     assert(Attack.find_by(torn_id: 1).attacker.nil?)
@@ -85,17 +96,27 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
   test 'updates battle stats for active users' do
     player = create(:player, torn_id: 12)
     create(:user, player: player, api_key: 'api_key')
-    request = ApiRequest.player_attacks('api_key')
-    stub_request(:get, request.url)
-      .to_return(body: JSON.dump(generic_attacks))
-    battle_stats_request = ApiRequest.battle_stats('api_key')
-    stub_request(:get, battle_stats_request.url)
-      .to_return(body: JSON.dump(battle_stats_body))
-    api_caller = ApiCaller.new(request, NoRateLimiter.new)
+    attack_request = stub_attack_requests
+    stub_battle_stats_requests
+    api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
     AttacksUpdater.new(api_caller).call
     assert_not(player.battle_stats_updates.empty?)
     assert(player.battle_stats_updates.first.timestamp <=
       Attack.find_by(torn_id: 1).timestamp)
+  end
+
+  # Should probably test all of the branches of this, but UGH
+  # There has to be a better way, maybe programmatically generating attack and
+  # battle stat stubs
+  test 'updates difficulty measures' do
+    player1 = create(:player, torn_id: 12)
+    create(:user, player: player1, api_key: 'api_key')
+    attack_request = stub_attack_requests
+    stub_battle_stats_requests
+    api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
+    AttacksUpdater.new(api_caller).call
+    assert_equal(player1.total_battle_stats,
+      Player.find_by(torn_id: 14)[:least_stats_beaten_by])
   end
 
   test 'raise exception when request fails' do

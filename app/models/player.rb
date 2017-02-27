@@ -9,4 +9,17 @@ class Player < ApplicationRecord
   def active_user?
     user && user.api_key
   end
+
+  def battle_stats
+    BattleStatsUpdate.where(player: self).order(timestamp: :desc).limit(1).first
+  end
+
+  def total_battle_stats
+    stats = battle_stats
+    return nil if stats.nil?
+    stats[:strength] * stats[:strength_modifier] +
+      stats[:dexterity] * stats[:dexterity_modifier] +
+      stats[:speed] * stats[:speed_modifier] +
+      stats[:defense] * stats[:defense_modifier]
+  end
 end
