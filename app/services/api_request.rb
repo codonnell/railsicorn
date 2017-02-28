@@ -6,6 +6,8 @@ class ApiRequest
     @api_key = api_key
   end
 
+  attr_reader :api_key
+
   def url
     root_url +
       "/#{@path}/#{@id}?selections=#{to_attributes(@selections)}&key=#{@api_key}"
