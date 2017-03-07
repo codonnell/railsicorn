@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn3
 // @namespace    sullengenie.Tornicorn3
-// @version      0.3
+// @version      0.4
 // @description  Estimates how difficult torn players are to attack
 // @author       sullengenie[1946152]
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
@@ -48,7 +48,7 @@ function updateApiKey() {
            localStorage.sullenApiKey = apiKey;
            console.log('Finished updating API key.');
            $('#sullen-api-error, #sullen-api-form').hide();
-           updateDifficulties();
+           updatePlayers();
          }
          else {
            handleInvalidApiKey();
