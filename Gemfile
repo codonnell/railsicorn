@@ -34,6 +34,9 @@ gem 'rufus-scheduler', '~> 3.3'
 # Validate api responses
 gem 'dry-validation', '~> 0.10'
 
+# Parallelize API requests
+gem 'parallel', '~> 1.10'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
@@ -46,10 +49,6 @@ group :development, :test do
 
   # Mock HTTP responses
   gem 'webmock', '~> 2.3'
-
-  # Parallelize API requests
-  gem 'parallel', '~> 1.10'
-
 
   gem 'pry'
   gem 'pry-doc'
