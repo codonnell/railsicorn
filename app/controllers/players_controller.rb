@@ -17,7 +17,8 @@ class PlayersController < ApplicationController
       return
     end
     info_hash = {}
-    player_params[:ids].each { |id| info_hash[id] = player_info(id) }
+    players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
+    players.each { |player| info_hash[player.torn_id] = player_info(player) }
     render json: info_hash.select { |_, info| info }
   end
 
@@ -48,13 +49,12 @@ class PlayersController < ApplicationController
 
   private
 
-  def player_info(player_id)
-    player = Player.find_or_create_by(torn_id: player_id)
+  def player_info(player)
     difficulty = @user.player.difficulty(player)
-    return nil unless difficulty || player.info
+    info = player.player_info_updates.sort_by(&:timestamp).last
     relevant_stats = { 'difficulty' => difficulty }
-    if player.info
-      relevant_stats.merge!(player.info.attributes.slice('xanax_taken', 'refills', 'stat_enhancers_used'))
+    if info
+      relevant_stats.merge!(info.attributes.slice('xanax_taken', 'refills', 'stat_enhancers_used'))
     end
     relevant_stats.each { |k, v| relevant_stats[k] = 0 if v.nil? }
     relevant_stats
