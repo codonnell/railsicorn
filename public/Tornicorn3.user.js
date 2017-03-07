@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn3
 // @namespace    sullengenie.Tornicorn3
-// @version      0.1
+// @version      0.2
 // @description  Estimates how difficult torn players are to attack
 // @author       sullengenie[1946152]
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
@@ -18,8 +18,8 @@
 // Your code here...
 this.$ = this.jQuery = jQuery.noConflict(true);
 var apiKey = localStorage.sullenApiKey;
-//var HOST = "tornicorn.com";
-var HOST = "http://localhost:3000/";
+var HOST = "https://railsicorn.herokuapp.com/";
+// var HOST = "http://localhost:3000/";
 
 GM_addStyle(
   '#sullen-api-form label { background-color: rgba(200, 195, 195, 1); border: 1px solid #fff; border-radius: 5px }' +
