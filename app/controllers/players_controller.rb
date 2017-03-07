@@ -10,13 +10,14 @@ class PlayersController < ApplicationController
 
   # GET /players/1
   def show
-    @user = User.find_by(api_key: params[:api_key])
+    puts player_params.inspect
+    @user = User.find_by(api_key: player_params[:api_key])
     unless @user
-      render json: { error: "Invalid API key #{params[:api_key]}" }
+      render json: { error: "Invalid API key #{player_params[:api_key]}" }
       return
     end
     info_hash = {}
-    params[:ids].each { |id| info_hash[id] = player_info(id) }
+    player_params[:ids].each { |id| info_hash[id] = player_info(id) }
     render json: info_hash.select { |_, info| info }
   end
 
@@ -65,7 +66,7 @@ class PlayersController < ApplicationController
     # end
 
     # Only allow a trusted parameter "white list" through.
-    # def player_params
-    #   params.require(:ids, :api_key)
-    # end
+    def player_params
+      params.permit(:api_key, ids: [])
+    end
 end

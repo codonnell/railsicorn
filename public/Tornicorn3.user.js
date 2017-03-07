@@ -38,16 +38,17 @@ function updateApiKey() {
 
   $('#sullen-api-form').submit(function() {
     apiKey = $('#sullen-api-input').val();
+    $('#sullen-api-error, #sullen-api-form').remove();
     GM_xmlhttpRequest(
       {method: 'POST',
        url: HOST+'users',
+       headers: {"Content-Type": "application/json"},
        data: JSON.stringify({ "api_key": apiKey }),
        onload: function( response ) {
          var data = JSON.parse(response.responseText);
          if (data.success) {
            localStorage.sullenApiKey = apiKey;
            console.log('Finished updating API key.');
-           $('#sullen-api-error, #sullen-api-form').hide();
            updatePlayers();
          }
          else {

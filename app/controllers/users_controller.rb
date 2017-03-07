@@ -15,7 +15,8 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    api_key = params['api_key']
+    puts user_params.inspect
+    api_key = user_params[:api_key]
     @user = User.find_by(api_key: api_key)
     if @user
       render json: { success: true }
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
     # end
 
     # Only allow a trusted parameter "white list" through.
-    # def user_params
-    #   params.require(:api_key)
-    # end
+    def user_params
+      params.require(:api_key)
+    end
 end
