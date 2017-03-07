@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn3
 // @namespace    sullengenie.Tornicorn3
-// @version      0.4
+// @version      0.5
 // @description  Estimates how difficult torn players are to attack
 // @author       sullengenie[1946152]
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
