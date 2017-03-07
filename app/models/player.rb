@@ -57,14 +57,15 @@ class Player < ApplicationRecord
     my_stats = total_battle_stats
     target[:least_stats_beaten_by] ||= Float::MAX
     target[:most_stats_defended_against] ||= Float::MIN
-    if my_stats >= target[:least_stats_beaten_by]
-      if my_stats <= target[:most_stats_defended_against]
+    # plus and minus ones are to deal with floating point quirks
+    if my_stats > target[:least_stats_beaten_by] - 1
+      if my_stats < target[:most_stats_defended_against] + 1
         :medium
       else
         :easy
       end
     else
-      if my_stats <= target[:most_stats_defended_against]
+      if my_stats < target[:most_stats_defended_against] + 1
         :impossible
       else
         :unknown
