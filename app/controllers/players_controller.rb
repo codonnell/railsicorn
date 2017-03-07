@@ -11,6 +11,10 @@ class PlayersController < ApplicationController
   # GET /players/1
   def show
     @user = User.find_by(api_key: params[:api_key])
+    unless @user
+      render json: { error: "Invalid API key #{params[:api_key]}" }
+      return
+    end
     info_hash = {}
     params[:ids].each { |id| info_hash[id] = player_info(id) }
     render json: info_hash.select { |_, info| info }
