@@ -5,7 +5,6 @@ class PlayerInfoUpdater
 
   def call
     response = @api_caller.call
-    puts response
     validator = PlayerInfoValidator.new(response)
     raise validator.errors.to_s if validator.invalid?
     @response = coerce(response)
