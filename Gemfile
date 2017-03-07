@@ -37,6 +37,9 @@ gem 'dry-validation', '~> 0.10'
 # Parallelize API requests
 gem 'parallel', '~> 1.10'
 
+# Error notification
+gem 'rollbar'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
