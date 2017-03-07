@@ -40,6 +40,9 @@ gem 'parallel', '~> 1.10'
 # Error notification
 gem 'rollbar'
 
+# Metrics
+gem 'newrelic_rpm'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
