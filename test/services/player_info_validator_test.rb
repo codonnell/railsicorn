@@ -95,6 +95,8 @@ class PlayerInfoValidatorTest < ActiveSupport::TestCase
         revives: 1108,
         revivesreceived: 533,
         medicalitemsused: 30126,
+        medstolen: 5,
+        spydone: 10,
         statenhancersused: 4813,
         trainsreceived: 0,
         totalbountyspent: 49826666,
@@ -168,6 +170,18 @@ class PlayerInfoValidatorTest < ActiveSupport::TestCase
     nil_refills = valid_schema_h
     nil_refills[:refills] = nil
     assert PlayerInfoValidator.new(nil_refills).valid?
+  end
+
+  test 'nil forum posts is valid' do
+    nil_forum_posts = valid_schema_h
+    nil_forum_posts[:forum_posts] = nil
+    assert PlayerInfoValidator.new(nil_forum_posts).valid?
+  end
+
+  test 'integer name is valid' do
+    int_name = valid_schema_h
+    int_name[:name] = 1
+    assert PlayerInfoValidator.new(int_name).valid?
   end
 
   test 'minimal response is valid' do

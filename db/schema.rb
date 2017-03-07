@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170227030812) do
+ActiveRecord::Schema.define(version: 20170306184948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20170227030812) do
     t.integer  "defends_lost"
     t.integer  "defends_won"
     t.integer  "defends_draw"
-    t.integer  "xan_taken"
+    t.integer  "xanax_taken"
     t.integer  "ecstasy_taken"
     t.integer  "times_traveled"
     t.bigint   "networth"
@@ -170,6 +170,8 @@ ActiveRecord::Schema.define(version: 20170227030812) do
     t.integer  "duke_contracts_completed"
     t.integer  "missions_completed"
     t.string   "name"
+    t.integer  "medical_items_stolen"
+    t.integer  "spies_done"
     t.index ["player_id"], name: "index_player_info_updates_on_player_id", using: :btree
     t.index ["spouse_id"], name: "index_player_info_updates_on_spouse_id", using: :btree
   end

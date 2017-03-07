@@ -27,7 +27,9 @@ gem 'rest-client', '~> 2.0'
 
 # Run recurrent tasks
 gem 'sidekiq', '~> 4.2'
-gem 'sidekiq-cron', '~> 0.4.0'
+# gem 'sidekiq-cron', '~> 0.4.0'
+# gem 'sidekiq-scheduler', '~> 2.1'
+gem 'rufus-scheduler', '~> 3.3'
 
 # Validate api responses
 gem 'dry-validation', '~> 0.10'

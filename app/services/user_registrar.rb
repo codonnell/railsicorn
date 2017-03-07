@@ -10,6 +10,7 @@ class UserRegistrar
     player = player_info.player
     user = update_user(player)
     update_battle_stats(user)
+    user
   rescue EmptyKeyError, IncorrectKeyError
     return nil
   end

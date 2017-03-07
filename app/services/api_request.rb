@@ -13,6 +13,10 @@ class ApiRequest
       "/#{@path}/#{@id}?selections=#{to_attributes(@selections)}&key=#{@api_key}"
   end
 
+  def self.faction_attacks(api_key)
+    new(path: :faction, selections: [:attacks], api_key: api_key)
+  end
+
   def self.player_attacks(api_key)
     new(path: :user, selections: [:attacks], api_key: api_key)
   end

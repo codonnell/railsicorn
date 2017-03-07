@@ -95,6 +95,8 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
         revives: 1108,
         revivesreceived: 533,
         medicalitemsused: 30126,
+        medstolen: 5,
+        spydone: 10,
         statenhancersused: 4813,
         trainsreceived: 0,
         totalbountyspent: 49826666,
@@ -170,6 +172,7 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
     assert_equal(50, update[:caymans_travel])
     assert_equal('BodyBagger', update[:name])
     assert PlayerInfoUpdate.find_by(timestamp: update[:timestamp])
+    assert(Player.find_by(torn_id: 99177).signup)
   end
 
   test 'throw exception when request fails' do

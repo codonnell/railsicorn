@@ -40,32 +40,31 @@ FactoryGirl.define do
   end
 
   factory :player_info_update do
-    trait :minimal do
-      timestamp { DateTime.now }
-      name { "Player#{generate(:player_id)}" }
-      level 1
-      last_action { 3.days.ago }
-      player
-      awards 0
-      friends 0
-      enemies 0
-      karma 0
-      forum_posts 0
-      role 'Civilian'
-      donator true
-      max_life 100
-      company_id 0
-      position 'Employee'
-      association :spouse, factory: :player
-      faction
-      logins 1
-      activity 1
-    end
+    timestamp { DateTime.now }
+    name { "Player#{generate(:player_id)}" }
+    level 1
+    last_action { 3.days.ago }
+    player
+    awards 0
+    friends 0
+    enemies 0
+    karma 0
+    forum_posts 0
+    role 'Civilian'
+    donator true
+    max_life 100
+    company_id 0
+    position 'Employee'
+    association :spouse, factory: :player
+    logins 1
+    activity 1
   end
 
   factory :player do
     torn_id { generate(:player_id) }
     signup { 1.week.ago }
+    least_stats_beaten_by nil
+    most_stats_defended_against nil
   end
 
   factory :user do

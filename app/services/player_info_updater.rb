@@ -5,6 +5,7 @@ class PlayerInfoUpdater
 
   def call
     response = @api_caller.call
+    puts response
     validator = PlayerInfoValidator.new(response)
     raise validator.errors.to_s if validator.invalid?
     @response = coerce(response)
@@ -25,6 +26,7 @@ class PlayerInfoUpdater
 
   def find_or_create_player
     player = Player.find_by(torn_id: @response[:player])
+    player.update(signup: @response[:signup]) unless player.nil? || player.signup
     unless player
       player = Player.create(torn_id: @response[:player], signup: @response[:signup])
     end
@@ -48,8 +50,8 @@ class PlayerInfoUpdater
     faction = @response[:faction].zero? ? nil :
       Faction.find_or_create_by(torn_id: @response[:faction])
     player = @response[:player]
-    player.faction = faction
-    player.user.faction = faction if player.user
+    player.update(faction: faction)
+    player.user.update(faction: faction) if player.user
     @response.delete :faction
   end
 

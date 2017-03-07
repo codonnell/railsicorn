@@ -9,13 +9,13 @@ class PlayerInfoValidator < Validator
     required(:awards) { int? & gteq?(0) }
     required(:friends) { int? & gteq?(0) }
     required(:enemies) { int? & gteq?(0) }
-    required(:forum_posts) { int? & gteq?(0) }
+    required(:forum_posts).maybe(:int?)
     required(:karma) { int? & gteq?(0) }
     required(:role).value(included_in?:
       %w(Admin Officer Secretary Moderator Helper NPC Civilian Reporter))
     required(:donator).value(included_in?: [0, 1])
     required(:player_id) { int? & gt?(0) }
-    required(:name).filled(:str?)
+    required(:name) { int? | str? }
     required(:last_action).format?(/\d+ (minutes?|hours?|days?) ago/)
     required(:life).schema do
       required(:maximum) { int? & gteq?(0) }
@@ -52,6 +52,7 @@ class PlayerInfoValidator < Validator
       optional(:refills).maybe(:int?)
       optional(:statenhancersused) { int? & gteq?(0) }
       optional(:medicalitemsused) { int? & gteq?(0) }
+      optional(:medstolen) { int? & gteq?(0) }
       optional(:weaponsbought) { int? & gteq?(0) }
       optional(:bazaarcustomers) { int? & gteq?(0) }
       optional(:bazaarsales) { int? & gteq?(0) }
@@ -78,7 +79,8 @@ class PlayerInfoValidator < Validator
       optional(:virusescoded) { int? & gteq?(0) }
       optional(:cityfinds) { int? & gteq?(0) }
       optional(:bountiesplaced) { int? & gteq?(0) }
-      optional(:bountiesreceived) { int? & gteq?(0) }
+      # optional(:bountiesreceived) { int? & gteq?(0) }
+      optional(:bountiesreceived) { int? }
       optional(:bountiescollected) { int? & gteq?(0) }
       optional(:totalbountyreward) { int? & gteq?(0) }
       optional(:totalbountyspent) { int? & gteq?(0) }
