@@ -24,7 +24,10 @@ class PlayersController < ApplicationController
 
   def authorize_user
     @user = User.find_by(api_key: player_params[:api_key])
-    render json: { error: "Unknown API key #{player_params[:api_key]}" } unless @user
+    unless @user
+      render json: { error: "Unknown API key #{player_params[:api_key]}" }
+      return
+    end
     render json: { error: "Unauthorized faction" } unless @user.faction.authorized?
   end
 
