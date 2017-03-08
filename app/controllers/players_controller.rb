@@ -3,24 +3,24 @@ class PlayersController < ApplicationController
 
   def show
     @player = @user.player
-    @players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
-    create_unknown_players
     info_hash = {}
-    @players.each { |player| info_hash[player.torn_id] = player_info(player) }
+    players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
+    create_unknown_players(players)
+    players.each { |player| info_hash[player.torn_id] = player_info(player) }
     render json: info_hash.select { |_, info| info }
   end
 
   private
 
-  def create_unknown_players
+  def create_unknown_players(players)
     Player.create(
-      (Set.new(player_params[:ids]) - Set.new(@players.map(&:torn_id))).map { |id| {torn_id: id} }
+      (Set.new(player_params[:ids]) - Set.new(players.map(&:torn_id))).map { |id| {torn_id: id} }
     )
   end
 
   def player_info(player)
     difficulty = @player.difficulty(player)
-    info = @player.player_info_updates.sort_by(&:timestamp).last
+    info = player.player_info_updates.sort_by(&:timestamp).last
     relevant_stats = { 'difficulty' => difficulty }
     if info
       relevant_stats.merge!(info.attributes.slice('xanax_taken', 'refills', 'stat_enhancers_used'))
