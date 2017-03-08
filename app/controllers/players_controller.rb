@@ -3,13 +3,20 @@ class PlayersController < ApplicationController
 
   def show
     @player = @user.player
+    @players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
+    create_unknown_players
     info_hash = {}
-    players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
-    players.each { |player| info_hash[player.torn_id] = player_info(player) }
+    @players.each { |player| info_hash[player.torn_id] = player_info(player) }
     render json: info_hash.select { |_, info| info }
   end
 
   private
+
+  def create_unknown_players
+    Player.create(
+      (Set.new(player_params[:ids]) - Set.new(@players.map(&:torn_id))).map { |id| {torn_id: id} }
+    )
+  end
 
   def player_info(player)
     difficulty = @player.difficulty(player)
