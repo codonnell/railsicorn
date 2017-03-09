@@ -3,7 +3,7 @@ require 'dry-validation'
 class PlayerInfoValidator < Validator
   Schema = Dry::Validation.Schema do
     required(:rank).value(:str?)
-    required(:level) { int? & gt?(0) }
+    required(:level) { int? & gteq?(0) }
     required(:gender).value(:str?)
     required(:signup).format?(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)
     required(:awards) { int? & gteq?(0) }
