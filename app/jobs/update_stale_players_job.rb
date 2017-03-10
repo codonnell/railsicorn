@@ -5,9 +5,11 @@ class UpdateStalePlayersJob < ActiveJob::Base
     request_infos = stale_players.zip(active_users)
     Parallel.each(request_infos,
                   in_threads: Rails.application.config.request_threads) do |player, user|
-      request = ApiRequest.player_info(user.api_key, player.torn_id)
-      api_caller = ApiCaller.new(request, RateLimiter.new(user))
-      PlayerInfoUpdater.new(api_caller).call
+      ActiveRecord::Base.connection_pool.with_connection do
+        request = ApiRequest.player_info(user.api_key, player.torn_id)
+        api_caller = ApiCaller.new(request, RateLimiter.new(user))
+        PlayerInfoUpdater.new(api_caller).call
+      end
     end
   end
 end
