@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307063902) do
+ActiveRecord::Schema.define(version: 20170310155026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -128,7 +128,7 @@ ActiveRecord::Schema.define(version: 20170307063902) do
     t.integer  "faction_mail_sent"
     t.integer  "company_mail_sent"
     t.integer  "spouse_mail_sent"
-    t.integer  "largest_mug"
+    t.bigint   "largest_mug"
     t.integer  "canabis_taken"
     t.integer  "ketamine_taken"
     t.integer  "lsd_taken"

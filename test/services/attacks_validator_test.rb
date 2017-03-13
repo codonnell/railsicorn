@@ -43,6 +43,8 @@ class AttacksValidatorTest < ActiveSupport::TestCase
   test 'accepts integer names' do
     attacks = generic_attacks.clone
     attacks[:attacks][:"1"][:attacker_name] = 1234
+    attacks[:attacks][:"1"][:attacker_factionname] = 0
+    attacks[:attacks][:"1"][:defender_factionname] = 0
     validator = AttacksValidator.new(attacks)
     assert validator.valid?
   end

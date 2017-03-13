@@ -15,11 +15,11 @@ class AttacksValidator < Validator
         required(:attacker_id) { str? > empty? | int? & gt?(0) }
         required(:attacker_name) { none? | str? | int? }
         required(:attacker_faction) { str? > empty? | int? & gt?(0) }
-        required(:attacker_factionname).maybe(:str?)
+        required(:attacker_factionname) { none? | str? | int? }
         required(:defender_id) { int? & gt?(0) }
         required(:defender_name) { str? | int? }
         required(:defender_faction) { str? > empty? | int? & gt?(0) }
-        required(:defender_factionname).maybe(:str?)
+        required(:defender_factionname) { none? | str? | int? }
         required(:respect_gain) { int? > eql?(0) | float? & gteq?(0.0) }
         required(:result).value(included_in?:
           ['Hospitalize', 'Stalemate', 'Leave', 'Mug', 'Lose', 'Run away',
