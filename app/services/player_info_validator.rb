@@ -20,7 +20,8 @@ class PlayerInfoValidator < Validator
     required(:life).schema do
       required(:maximum) { int? & gteq?(0) }
     end
-    required(:status).each(:str?)
+    # Now this can be a string or an array of strings. We don't use it, so ignore it for now.
+    # required(:status).each(:str?)
     required(:job).schema do
       required(:company_id) { int? & gteq?(0) }
       required(:position).value(:str?)
@@ -79,8 +80,8 @@ class PlayerInfoValidator < Validator
       optional(:virusescoded) { int? & gteq?(0) }
       optional(:cityfinds) { int? & gteq?(0) }
       optional(:bountiesplaced) { int? & gteq?(0) }
-      # optional(:bountiesreceived) { int? & gteq?(0) }
-      optional(:bountiesreceived) { int? }
+      optional(:bountiesreceived) { int? & gteq?(0) }
+      # optional(:bountiesreceived) { int? }
       optional(:bountiescollected) { int? & gteq?(0) }
       optional(:totalbountyreward) { int? & gteq?(0) }
       optional(:totalbountyspent) { int? & gteq?(0) }
