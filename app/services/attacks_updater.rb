@@ -10,7 +10,9 @@ class AttacksUpdater
     validator = AttacksValidator.new(response)
     raise validator.errors.to_s if validator.invalid?
     attacks = coerce(response)
-    new_attacks = attacks.map { |attack| new(attack) unless exists?(attack) }.compact
+    attack_ids = attacks.map { |attack| attack[:torn_id] }
+    new_ids = Set.new(attack_ids) - Set.new(known_ids(attack_ids))
+    new_attacks = attacks.map { |attack| new(attack) if new_ids.include?(attack[:torn_id]) }.compact
     update_battle_stats(new_attacks)
     update_difficulties(new_attacks)
     save(new_attacks)
@@ -18,6 +20,10 @@ class AttacksUpdater
   end
 
   private
+
+  def known_ids(attack_ids)
+    Attack.where(torn_id: attack_ids).pluck(:torn_id)
+  end
 
   def coerce(response)
     AttacksCoercer.new(response).call
@@ -44,8 +50,8 @@ class AttacksUpdater
     attack.delete :defender_id
   end
 
-  def update_battle_stats(attacks)
-    pairs = attacks.map { |attack| [attack.attacker, attack.defender] }
+  def update_battle_stats(new_attacks)
+    pairs = new_attacks.map { |attack| [attack.attacker, attack.defender] }
     players_to_update = Set.new(pairs.flatten.compact).select(&:active_user?)
     Parallel.each(players_to_update,
                   in_threads: Rails.application.config.request_threads) do |player|
