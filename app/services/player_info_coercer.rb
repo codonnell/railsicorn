@@ -174,7 +174,15 @@ class PlayerInfoCoercer
         missioncreditsearned: :mission_credits,
         contractscompleted: :contracts_completed,
         dukecontractscompleted: :duke_contracts_completed,
-        missionscompleted: :missions_completed
+        missionscompleted: :missions_completed,
+        bestdamage: :best_damage,
+        killstreak: :kill_streak,
+        moneyinvested: :money_invested,
+        investedprofit: :invested_profit,
+        onehitkills: :one_hit_kills,
+        attackmisses: :attack_misses,
+        attackdamage: :attack_damage,
+        attackhits: :attack_hits
       }
     }
   end

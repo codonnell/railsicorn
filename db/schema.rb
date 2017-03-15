@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310155026) do
+ActiveRecord::Schema.define(version: 20170315153159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,6 +174,14 @@ ActiveRecord::Schema.define(version: 20170310155026) do
     t.string   "name"
     t.integer  "medical_items_stolen"
     t.integer  "spies_done"
+    t.integer  "best_damage"
+    t.integer  "kill_streak"
+    t.integer  "one_hit_kills"
+    t.bigint   "money_invested"
+    t.bigint   "invested_profit"
+    t.integer  "attack_misses"
+    t.bigint   "attack_damage"
+    t.integer  "attack_hits"
     t.index ["player_id"], name: "index_player_info_updates_on_player_id", using: :btree
     t.index ["spouse_id"], name: "index_player_info_updates_on_spouse_id", using: :btree
     t.index ["timestamp"], name: "index_player_info_updates_on_timestamp", using: :btree

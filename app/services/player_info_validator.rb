@@ -140,6 +140,14 @@ class PlayerInfoValidator < Validator
       optional(:contractscompleted) { int? & gteq?(0) }
       optional(:dukecontractscompleted) { int? & gteq?(0) }
       optional(:missionscompleted) { int? & gteq?(0) }
+      optional(:bestdamage) { int? & gteq?(0) }
+      optional(:killstreak) { int? & gteq?(0) }
+      optional(:moneyinvested) { int? & gteq?(0) }
+      optional(:investedprofit) { int? & gteq?(0) }
+      optional(:onehitkills) { int? & gteq?(0) }
+      optional(:attackmisses) { int? & gteq?(0) }
+      optional(:attackdamage) { int? & gteq?(0) }
+      optional(:attackhits) { int? & gteq?(0) }
     end
   end
 

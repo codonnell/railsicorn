@@ -165,7 +165,15 @@ class PlayerInfoCoercerTest < ActiveSupport::TestCase
         contractscompleted: 391,
         dukecontractscompleted: 391,
         missionscompleted: 1,
-        refills: 2004
+        refills: 2004,
+        bestdamage: 6086,
+        killstreak: 0,
+        moneyinvested: 1000000,
+        investedprofit: 100000000,
+        onehitkills: 1000,
+        attackmisses: 7283,
+        attackdamage: 10000,
+        attackhits: 1000
       }
     }
   end
@@ -293,7 +301,15 @@ class PlayerInfoCoercerTest < ActiveSupport::TestCase
       :contracts_completed=>391,
       :duke_contracts_completed=>391,
       :missions_completed=>1,
-      :refills=>2004
+      :refills=>2004,
+      best_damage: 6086,
+      kill_streak: 0,
+      money_invested: 1000000,
+      invested_profit: 100000000,
+      one_hit_kills: 1000,
+      attack_misses: 7283,
+      attack_damage: 10000,
+      attack_hits: 1000
     }
   end
 

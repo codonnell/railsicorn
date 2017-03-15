@@ -157,7 +157,15 @@ class PlayerInfoValidatorTest < ActiveSupport::TestCase
         contractscompleted: 391,
         dukecontractscompleted: 391,
         missionscompleted: 1,
-        refills: 2004
+        refills: 2004,
+        bestdamage: 6086,
+        killstreak: 0,
+        moneyinvested: 1000000,
+        investedprofit: 100000000,
+        onehitkills: 1000,
+        attackmisses: 7283,
+        attackdamage: 10000000,
+        attackhits: 10000
       }
     }
   end
