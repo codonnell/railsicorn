@@ -2,6 +2,8 @@ require 'rest-client'
 require 'json'
 
 class ApiCaller
+  attr_reader :request
+
   def initialize(request, rate_limiter)
     @request = request
     @rate_limiter = rate_limiter

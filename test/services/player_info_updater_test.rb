@@ -162,6 +162,10 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
     }
   end
 
+  def invalid_id_body
+    { error: { code: 6, error: "Incorrect ID" } }
+  end
+
   test 'creates update with correct api response' do
     stub_request(:get, /.*api\.torn\.com.*/)
       .to_return(body: JSON.dump(valid_body))
@@ -201,5 +205,15 @@ class PlayerInfoUpdaterTest < ActiveSupport::TestCase
       NoRateLimiter.new)
     updater = PlayerInfoUpdater.new(api_caller)
     assert_raises(Exception) { updater.call }
+  end
+
+  test 'destroys player with invalid id' do
+    api_caller = ApiCaller.new(ApiRequest.player_info('api_key', 1),
+      NoRateLimiter.new)
+    stub_request(:get, /.*api\.torn\.com.*/)
+      .to_return(body: JSON.dump(invalid_id_body))
+    create(:player, torn_id: 1)
+    PlayerInfoUpdater.new(api_caller).call
+    assert_nil Player.find_by(torn_id: 1)
   end
 end

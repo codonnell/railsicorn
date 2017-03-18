@@ -11,6 +11,10 @@ class PlayerInfoUpdater
     resolve_references
     add_timestamp
     PlayerInfoUpdate.create(@response)
+  rescue InvalidIdError
+    id = @api_caller.request.id
+    Player.find_by(torn_id: id).destroy!
+    Rails.logger.info "Destroyed invalid player with torn id #{id}"
   end
 
   def coerce(response)

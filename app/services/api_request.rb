@@ -7,6 +7,7 @@ class ApiRequest
   end
 
   attr_reader :api_key
+  attr_reader :id
 
   def url
     root_url +
