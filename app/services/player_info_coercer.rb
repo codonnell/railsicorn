@@ -44,6 +44,7 @@ class PlayerInfoCoercer
   def remove_excess_attributes
     @info.each do |k, v|
       @info.delete(k) if v.instance_of?(Hash)
+      @info.delete(k) if v.instance_of?(Array)
     end
     @info.delete(:status)
   end
