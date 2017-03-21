@@ -10,7 +10,6 @@ class PlayerInfoUpdater
     @response = coerce(response)
     resolve_references
     add_timestamp
-    puts @response
     PlayerInfoUpdate.create(@response)
   rescue InvalidIdError
     destroy_invalid_player
