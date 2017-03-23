@@ -80,8 +80,8 @@ class PlayerInfoValidator < Validator
       optional(:virusescoded) { int? & gteq?(0) }
       optional(:cityfinds) { int? & gteq?(0) }
       optional(:bountiesplaced) { int? & gteq?(0) }
-      optional(:bountiesreceived) { int? & gteq?(0) }
-      # optional(:bountiesreceived) { int? }
+      # optional(:bountiesreceived) { int? & gteq?(0) }
+      optional(:bountiesreceived) { int? }
       optional(:bountiescollected) { int? & gteq?(0) }
       optional(:totalbountyreward) { int? & gteq?(0) }
       optional(:totalbountyspent) { int? & gteq?(0) }
