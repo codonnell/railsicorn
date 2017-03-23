@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.4.36
+// @version     2.4.37
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -635,14 +635,14 @@ function addFilterPanel($panel) {
 
   $panel.append($seElement);
 
-  $panel.append('<br>').append($filterStatusElement)//.append(' enemies are hidden by the filter.)');
+  $panel.append('<br>').append($filterStatusElement);//.append(' enemies are hidden by the filter.)');
 
   //Create, place, and define click handler for refresh button
-  var button = createButton('Reset Full Xanax/Refill/SE').click(getXanEtcFull);
-  var button2 = createButton('Update Xanax/Refill/SE').click(getXanEtcUpdate);
+  // var button = createButton('Reset Full Xanax/Refill/SE').click(getXanEtcFull);
+  // var button2 = createButton('Update Xanax/Refill/SE').click(getXanEtcUpdate);
   //var button3 = createButton('Refresh').click(refreshWarbase);
-  $panel.prepend(button);
-  $panel.prepend(button2);
+  // $panel.prepend(button);
+  // $panel.prepend(button2);
   //$panel.prepend(button3)
   $panel.append("<br><b>Select Bonus Factions (will be highlighted in blue, hold ctrl to select multiple factions) </b><div id='bonusFaction'><select id='selectFaction' multiple></select></div>");
   //Get list of factions
