@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170315153159) do
+ActiveRecord::Schema.define(version: 20170326172356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170315153159) do
     t.integer  "people_busted"
     t.integer  "failed_busts"
     t.integer  "bails_bought"
-    t.integer  "bails_spent"
+    t.bigint   "bails_spent"
     t.integer  "viruses_coded"
     t.integer  "city_finds"
     t.integer  "bounties_placed"
