@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn3
 // @namespace    sullengenie.Tornicorn3
-// @version      0.5
+// @version      0.6
 // @description  Estimates how difficult torn players are to attack
 // @author       sullengenie[1946152]
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
@@ -136,12 +136,6 @@ function updateEnemyStats(players) {
 }
 
 function updateEnemyTags(difficulties) {
-  // var id;
-  // for (id in difficulties) {
-  //   if (difficulties[id] === 'unknown') {
-  //     delete difficulties[id];
-  //   }
-  // }
   var sullenEnemyTags = JSON.parse(localStorage.sullenEnemyTags || "{}");
   $.extend(sullenEnemyTags, difficulties);
   var vinkuunEnemyTags = JSON.parse(localStorage.vinkuunEnemyTags || "{}");
@@ -153,7 +147,6 @@ function updateEnemyTags(difficulties) {
     if (enemyTags[userId]) {
       //console.log('Setting difficulty for ' + userId + ' to ' + tag_color(enemyTags[userId]));
       attackButton.css({
-        //'background-color': TAG_COLORS[enemyTags[userId]] || 'rgb(132, 129, 129)',
         'background-color': tag_color(enemyTags[userId]) || 'rgb(132, 129, 129)',
         'border-radius': '5px'
       });
@@ -165,15 +158,6 @@ function updateEnemyTags(difficulties) {
       }
     }
   }
-  //   if (enemyTags[userId]) {
-  //     attackButton.css({
-  //       'background-color': tag_color([enemyTags[userId]]) || 'rgb(132, 129, 129)',
-  //       'border-radius': '5px'
-  //     });
-
-  //     attackButton.attr('title', 'Difficulty: ' + enemyTags[userId]);
-  //   }
-  // }
   else if (location.href.indexOf('torn.com/factions.php') !== -1) {
     $('.member-list > li').each(function(idx, li) {
       var id = idFromLi(li);
@@ -194,7 +178,8 @@ function updatePlayers() {
       return parseInt(target.href.match(/XID=(\d+)/)[1]);
     });
   }
-  downloadPlayerInfo(targetIDs);
+  if (targetIDs.length !== 0)
+    downloadPlayerInfo(targetIDs);
 }
 
 function main() {
@@ -208,27 +193,6 @@ function main() {
   }
 }
 
-// if (location.href.indexOf('torn.com/profiles.php?XID=') !== -1) {
-//   main();
-// } else if (location.href.indexOf('torn.com/factions.php') !== -1) {
-//   var target = document.querySelector('#faction-main');
-//   // create an observer instance
-//   var observer = new MutationObserver(function(mutations) {
-//     mutations.forEach(function(mutation) {
-//       var i;
-//       for (i = 0; i < mutation.addedNodes.length; i++) {
-//         if (mutation.addedNodes.item(i).className === 'f-war-list war-old') {
-//           console.log('War page initiated!');
-//           main();
-//         }
-//       }
-//     });
-//   });
-//   // configuration of the observer:
-//   var config = { attributes: true, childList: true, characterData: true };
-//   // pass in the target node, as well as the observer options
-//   observer.observe(target, config);
-// }
 
 if (location.href.indexOf('torn.com/profiles.php?XID=') !== -1) {
   main();
@@ -251,15 +215,4 @@ if (location.href.indexOf('torn.com/profiles.php?XID=') !== -1) {
   var config = { attributes: true, childList: true, characterData: true };
   // pass in the target node, as well as the observer options
   observer.observe(target, config);
-  //var xan_target = document.querySelector('#iconTray');
-  //var xan_target = document.querySelector('#player-stats > .menu-info.chain > .icons.icons-above.left');
-  //console.log(xan_target);
-  //var xan_target = document.body;
-  //var drug_regex = /Drug Cooldown/;
-  //var xan_observer = new MutationObserver(function (mutations) {
-    //mutations.forEach(function (mutation) {
-      //console.log(mutation);
-    //});
-  //});
-  //xan_observer.observe(xan_target, config);
 }
