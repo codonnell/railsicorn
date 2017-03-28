@@ -10,4 +10,8 @@ class User < ApplicationRecord
   def self.active_users
     User.where.not(api_key: nil)
   end
+
+  def self.usernames
+    active_users.map { |user| user.player.info.name }
+  end
 end
