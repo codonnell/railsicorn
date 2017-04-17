@@ -53,12 +53,14 @@ class AttacksUpdater
   def update_battle_stats(new_attacks)
     pairs = new_attacks.map { |attack| [attack.attacker, attack.defender] }
     players_to_update = Set.new(pairs.flatten.compact).select(&:active_user?)
-    Parallel.each(players_to_update,
-                  in_threads: Rails.application.config.request_threads) do |player|
-      ActiveRecord::Base.connection_pool.with_connection do
-        request = ApiRequest.battle_stats(player.user.api_key)
-        api_caller = ApiCaller.new(request, RateLimiter.new(player.user))
-        BattleStatsUpdater.new(api_caller, player).call
+    Rails.application.executor.wrap do
+      Parallel.each(players_to_update,
+        in_threads: Rails.application.config.request_threads) do |player|
+        ActiveRecord::Base.connection_pool.with_connection do
+          request = ApiRequest.battle_stats(player.user.api_key)
+          api_caller = ApiCaller.new(request, RateLimiter.new(player.user))
+          BattleStatsUpdater.new(api_caller, player).call
+        end
       end
     end
   end
