@@ -35,6 +35,10 @@ class PlayersController < ApplicationController
       render json: { error: "Unknown API key: #{player_params[:api_key]}" }
       return
     end
+    # Enable profiling only for my requests
+    if player_params[:api_key] == Faction.find_by(torn_id: 16628).api_key
+      Rack::MiniProfiler.authorize_request
+    end
     render json: { error: "Unauthorized faction" } unless @user.faction.authorized?
   end
 

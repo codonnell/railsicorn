@@ -43,6 +43,10 @@ gem 'rollbar'
 # Metrics
 gem 'newrelic_rpm'
 
+# Profiling
+gem 'rack-mini-profiler'
+gem 'memory_profiler'
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
