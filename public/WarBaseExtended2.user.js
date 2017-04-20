@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.4.37
+// @version     2.4.38
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -176,8 +176,10 @@ function applyFilter() {
       var $this = $(this);
 
       var $li = $this.parent().parent();
-
-      var hospitalTimeLeft = remainingHospitalTime($li.find('.member-icons #icon15').attr('title'));
+      var title = $li.find('.member-icons #icon15').attr('title');
+      if (typeof title === 'undefined')
+        return;
+      var hospitalTimeLeft = remainingHospitalTime(title);
 
       if (hospitalTimeLeft > warBaseFilter.status.hospital) {
         countFiltered++;
