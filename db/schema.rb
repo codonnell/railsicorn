@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170422172932) do
+ActiveRecord::Schema.define(version: 20170422181301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,120 +69,120 @@ ActiveRecord::Schema.define(version: 20170422172932) do
     t.integer  "company_id"
     t.string   "position"
     t.integer  "spouse_id"
-    t.integer  "logins",                   default: 0
-    t.integer  "activity",                 default: 0
-    t.integer  "attacks_won",              default: 0
-    t.integer  "attacks_draw",             default: 0
-    t.integer  "attacks_lost",             default: 0
-    t.integer  "highest_beaten",           default: 0
-    t.integer  "best_kill_streak",         default: 0
-    t.integer  "defends_lost",             default: 0
-    t.integer  "defends_won",              default: 0
-    t.integer  "defends_draw",             default: 0
-    t.integer  "xanax_taken",              default: 0
-    t.integer  "ecstasy_taken",            default: 0
-    t.integer  "times_traveled",           default: 0
-    t.bigint   "networth",                 default: 0
-    t.integer  "refills",                  default: 0
-    t.integer  "stat_enhancers_used",      default: 0
-    t.integer  "medical_items_used",       default: 0
-    t.integer  "weapons_bought",           default: 0
-    t.integer  "bazaar_customers",         default: 0
-    t.integer  "bazaar_sales",             default: 0
-    t.bigint   "bazaar_profit",            default: 0
-    t.integer  "points_bought",            default: 0
-    t.integer  "points_sold",              default: 0
-    t.integer  "items_bought_abroad",      default: 0
-    t.integer  "items_bought",             default: 0
-    t.integer  "trades",                   default: 0
-    t.integer  "items_sent",               default: 0
-    t.integer  "auctions_won",             default: 0
-    t.integer  "auctions_sold",            default: 0
-    t.bigint   "money_mugged",             default: 0
-    t.integer  "attacks_stealthed",        default: 0
-    t.integer  "critical_hits",            default: 0
-    t.integer  "respect",                  default: 0
-    t.integer  "rounds_fired",             default: 0
-    t.integer  "attacks_ran_away",         default: 0
-    t.integer  "defends_ran_away",         default: 0
-    t.integer  "people_busted",            default: 0
-    t.integer  "failed_busts",             default: 0
-    t.integer  "bails_bought",             default: 0
-    t.bigint   "bails_spent",              default: 0
-    t.integer  "viruses_coded",            default: 0
-    t.integer  "city_finds",               default: 0
-    t.integer  "bounties_placed",          default: 0
-    t.integer  "bounties_received",        default: 0
-    t.integer  "bounties_collected",       default: 0
-    t.bigint   "bounty_rewards",           default: 0
-    t.bigint   "bounties_spent",           default: 0
-    t.integer  "revives",                  default: 0
-    t.integer  "revives_received",         default: 0
-    t.integer  "trains_received",          default: 0
-    t.integer  "drugs_taken",              default: 0
-    t.integer  "overdoses",                default: 0
-    t.integer  "merits_bought",            default: 0
-    t.integer  "personals_placed",         default: 0
-    t.integer  "classifieds_placed",       default: 0
-    t.integer  "mail_sent",                default: 0
-    t.integer  "friend_mail_sent",         default: 0
-    t.integer  "faction_mail_sent",        default: 0
-    t.integer  "company_mail_sent",        default: 0
-    t.integer  "spouse_mail_sent",         default: 0
-    t.bigint   "largest_mug",              default: 0
-    t.integer  "canabis_taken",            default: 0
-    t.integer  "ketamine_taken",           default: 0
-    t.integer  "lsd_taken",                default: 0
-    t.integer  "opium_taken",              default: 0
-    t.integer  "shrooms_taken",            default: 0
-    t.integer  "speed_taken",              default: 0
-    t.integer  "pcp_taken",                default: 0
-    t.integer  "vicodin_taken",            default: 0
-    t.integer  "mechanical_hits",          default: 0
-    t.integer  "artillery_hits",           default: 0
-    t.integer  "clubbed_hits",             default: 0
-    t.integer  "temp_hits",                default: 0
-    t.integer  "machine_gun_hits",         default: 0
-    t.integer  "pistol_hits",              default: 0
-    t.integer  "rifle_hits",               default: 0
-    t.integer  "shotgun_hits",             default: 0
-    t.integer  "smg_hits",                 default: 0
-    t.integer  "piercing_hits",            default: 0
-    t.integer  "slashing_hits",            default: 0
-    t.integer  "argentina_travel",         default: 0
-    t.integer  "mexico_travel",            default: 0
-    t.integer  "dubai_travel",             default: 0
-    t.integer  "hawaii_travel",            default: 0
-    t.integer  "japan_travel",             default: 0
-    t.integer  "london_travel",            default: 0
-    t.integer  "south_africa_travel",      default: 0
-    t.integer  "switzerland_travel",       default: 0
-    t.integer  "china_travel",             default: 0
-    t.integer  "canada_travel",            default: 0
-    t.integer  "caymans_travel",           default: 0
-    t.integer  "dump_finds",               default: 0
-    t.integer  "dump_searches",            default: 0
-    t.integer  "items_dumped",             default: 0
-    t.integer  "days_as_donator",          default: 0
-    t.integer  "times_jailed",             default: 0
-    t.integer  "times_hospitalized",       default: 0
-    t.integer  "attacks_assisted",         default: 0
-    t.integer  "blood_withdrawn",          default: 0
-    t.integer  "mission_credits",          default: 0
-    t.integer  "contracts_completed",      default: 0
-    t.integer  "duke_contracts_completed", default: 0
-    t.integer  "missions_completed",       default: 0
+    t.integer  "logins",                   default: 0, null: false
+    t.integer  "activity",                 default: 0, null: false
+    t.integer  "attacks_won",              default: 0, null: false
+    t.integer  "attacks_draw",             default: 0, null: false
+    t.integer  "attacks_lost",             default: 0, null: false
+    t.integer  "highest_beaten",           default: 0, null: false
+    t.integer  "best_kill_streak",         default: 0, null: false
+    t.integer  "defends_lost",             default: 0, null: false
+    t.integer  "defends_won",              default: 0, null: false
+    t.integer  "defends_draw",             default: 0, null: false
+    t.integer  "xanax_taken",              default: 0, null: false
+    t.integer  "ecstasy_taken",            default: 0, null: false
+    t.integer  "times_traveled",           default: 0, null: false
+    t.bigint   "networth",                 default: 0, null: false
+    t.integer  "refills",                  default: 0, null: false
+    t.integer  "stat_enhancers_used",      default: 0, null: false
+    t.integer  "medical_items_used",       default: 0, null: false
+    t.integer  "weapons_bought",           default: 0, null: false
+    t.integer  "bazaar_customers",         default: 0, null: false
+    t.integer  "bazaar_sales",             default: 0, null: false
+    t.bigint   "bazaar_profit",            default: 0, null: false
+    t.integer  "points_bought",            default: 0, null: false
+    t.integer  "points_sold",              default: 0, null: false
+    t.integer  "items_bought_abroad",      default: 0, null: false
+    t.integer  "items_bought",             default: 0, null: false
+    t.integer  "trades",                   default: 0, null: false
+    t.integer  "items_sent",               default: 0, null: false
+    t.integer  "auctions_won",             default: 0, null: false
+    t.integer  "auctions_sold",            default: 0, null: false
+    t.bigint   "money_mugged",             default: 0, null: false
+    t.integer  "attacks_stealthed",        default: 0, null: false
+    t.integer  "critical_hits",            default: 0, null: false
+    t.integer  "respect",                  default: 0, null: false
+    t.integer  "rounds_fired",             default: 0, null: false
+    t.integer  "attacks_ran_away",         default: 0, null: false
+    t.integer  "defends_ran_away",         default: 0, null: false
+    t.integer  "people_busted",            default: 0, null: false
+    t.integer  "failed_busts",             default: 0, null: false
+    t.integer  "bails_bought",             default: 0, null: false
+    t.bigint   "bails_spent",              default: 0, null: false
+    t.integer  "viruses_coded",            default: 0, null: false
+    t.integer  "city_finds",               default: 0, null: false
+    t.integer  "bounties_placed",          default: 0, null: false
+    t.integer  "bounties_received",        default: 0, null: false
+    t.integer  "bounties_collected",       default: 0, null: false
+    t.bigint   "bounty_rewards",           default: 0, null: false
+    t.bigint   "bounties_spent",           default: 0, null: false
+    t.integer  "revives",                  default: 0, null: false
+    t.integer  "revives_received",         default: 0, null: false
+    t.integer  "trains_received",          default: 0, null: false
+    t.integer  "drugs_taken",              default: 0, null: false
+    t.integer  "overdoses",                default: 0, null: false
+    t.integer  "merits_bought",            default: 0, null: false
+    t.integer  "personals_placed",         default: 0, null: false
+    t.integer  "classifieds_placed",       default: 0, null: false
+    t.integer  "mail_sent",                default: 0, null: false
+    t.integer  "friend_mail_sent",         default: 0, null: false
+    t.integer  "faction_mail_sent",        default: 0, null: false
+    t.integer  "company_mail_sent",        default: 0, null: false
+    t.integer  "spouse_mail_sent",         default: 0, null: false
+    t.bigint   "largest_mug",              default: 0, null: false
+    t.integer  "canabis_taken",            default: 0, null: false
+    t.integer  "ketamine_taken",           default: 0, null: false
+    t.integer  "lsd_taken",                default: 0, null: false
+    t.integer  "opium_taken",              default: 0, null: false
+    t.integer  "shrooms_taken",            default: 0, null: false
+    t.integer  "speed_taken",              default: 0, null: false
+    t.integer  "pcp_taken",                default: 0, null: false
+    t.integer  "vicodin_taken",            default: 0, null: false
+    t.integer  "mechanical_hits",          default: 0, null: false
+    t.integer  "artillery_hits",           default: 0, null: false
+    t.integer  "clubbed_hits",             default: 0, null: false
+    t.integer  "temp_hits",                default: 0, null: false
+    t.integer  "machine_gun_hits",         default: 0, null: false
+    t.integer  "pistol_hits",              default: 0, null: false
+    t.integer  "rifle_hits",               default: 0, null: false
+    t.integer  "shotgun_hits",             default: 0, null: false
+    t.integer  "smg_hits",                 default: 0, null: false
+    t.integer  "piercing_hits",            default: 0, null: false
+    t.integer  "slashing_hits",            default: 0, null: false
+    t.integer  "argentina_travel",         default: 0, null: false
+    t.integer  "mexico_travel",            default: 0, null: false
+    t.integer  "dubai_travel",             default: 0, null: false
+    t.integer  "hawaii_travel",            default: 0, null: false
+    t.integer  "japan_travel",             default: 0, null: false
+    t.integer  "london_travel",            default: 0, null: false
+    t.integer  "south_africa_travel",      default: 0, null: false
+    t.integer  "switzerland_travel",       default: 0, null: false
+    t.integer  "china_travel",             default: 0, null: false
+    t.integer  "canada_travel",            default: 0, null: false
+    t.integer  "caymans_travel",           default: 0, null: false
+    t.integer  "dump_finds",               default: 0, null: false
+    t.integer  "dump_searches",            default: 0, null: false
+    t.integer  "items_dumped",             default: 0, null: false
+    t.integer  "days_as_donator",          default: 0, null: false
+    t.integer  "times_jailed",             default: 0, null: false
+    t.integer  "times_hospitalized",       default: 0, null: false
+    t.integer  "attacks_assisted",         default: 0, null: false
+    t.integer  "blood_withdrawn",          default: 0, null: false
+    t.integer  "mission_credits",          default: 0, null: false
+    t.integer  "contracts_completed",      default: 0, null: false
+    t.integer  "duke_contracts_completed", default: 0, null: false
+    t.integer  "missions_completed",       default: 0, null: false
     t.string   "name"
-    t.integer  "medical_items_stolen",     default: 0
-    t.integer  "spies_done",               default: 0
-    t.integer  "best_damage",              default: 0
-    t.integer  "kill_streak",              default: 0
-    t.integer  "one_hit_kills",            default: 0
-    t.bigint   "money_invested",           default: 0
-    t.bigint   "invested_profit",          default: 0
-    t.integer  "attack_misses",            default: 0
-    t.bigint   "attack_damage",            default: 0
-    t.integer  "attack_hits",              default: 0
+    t.integer  "medical_items_stolen",     default: 0, null: false
+    t.integer  "spies_done",               default: 0, null: false
+    t.integer  "best_damage",              default: 0, null: false
+    t.integer  "kill_streak",              default: 0, null: false
+    t.integer  "one_hit_kills",            default: 0, null: false
+    t.bigint   "money_invested",           default: 0, null: false
+    t.bigint   "invested_profit",          default: 0, null: false
+    t.integer  "attack_misses",            default: 0, null: false
+    t.bigint   "attack_damage",            default: 0, null: false
+    t.integer  "attack_hits",              default: 0, null: false
     t.index ["player_id"], name: "index_player_info_updates_on_player_id", using: :btree
     t.index ["spouse_id"], name: "index_player_info_updates_on_spouse_id", using: :btree
     t.index ["timestamp"], name: "index_player_info_updates_on_timestamp", using: :btree
