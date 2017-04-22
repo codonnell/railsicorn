@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326172356) do
+ActiveRecord::Schema.define(version: 20170422122932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20170326172356) do
     t.index ["attacker_id"], name: "index_attacks_on_attacker_id", using: :btree
     t.index ["defender_id"], name: "index_attacks_on_defender_id", using: :btree
     t.index ["timestamp"], name: "index_attacks_on_timestamp", using: :btree
-    t.index ["torn_id"], name: "index_attacks_on_torn_id", using: :btree
+    t.index ["torn_id"], name: "index_attacks_on_torn_id", unique: true, using: :btree
   end
 
   create_table "battle_stats_updates", force: :cascade do |t|
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20170326172356) do
     t.string   "api_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["torn_id"], name: "index_factions_on_torn_id", unique: true, using: :btree
   end
 
   create_table "player_info_updates", force: :cascade do |t|
@@ -197,7 +198,7 @@ ActiveRecord::Schema.define(version: 20170326172356) do
     t.float    "least_stats_beaten_by"
     t.float    "most_stats_defended_against"
     t.index ["faction_id"], name: "index_players_on_faction_id", using: :btree
-    t.index ["torn_id"], name: "index_players_on_torn_id", using: :btree
+    t.index ["torn_id"], name: "index_players_on_torn_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_players_on_user_id", using: :btree
   end
 
