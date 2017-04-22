@@ -2,8 +2,8 @@ class PlayersController < ApplicationController
   before_action :authorize_user
 
   def show
-    render json: {}
-    return
+    # render json: {}
+    # return
     @player = @user.player
     info_hash = {}
     players = Player.where(torn_id: player_params[:ids]).includes(:player_info_updates)
