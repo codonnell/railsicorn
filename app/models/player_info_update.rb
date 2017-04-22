@@ -33,9 +33,7 @@ class PlayerInfoUpdate < ApplicationRecord
     cols.each { |col| denull_col(col) }
   end
 
-  private
-
-  def denull_col(col)
+  def self.denull_col(col)
     ActiveRecord::Base.connection.execute("UPDATE player_info_updates SET #{col} = 0 WHERE #{col} IS NULL")
   end
 end
