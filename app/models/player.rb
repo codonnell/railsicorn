@@ -57,6 +57,7 @@ class Player < ApplicationRecord
   def difficulty(target)
     my_stats = total_battle_stats
     return :unknown unless my_stats
+    target = target.clone
     target[:least_stats_beaten_by] ||= Float::MAX
     target[:most_stats_defended_against] ||= Float::MIN
     # plus and minus ones are to deal with floating point quirks

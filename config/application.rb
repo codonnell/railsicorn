@@ -34,6 +34,9 @@ module Railsicorn
     config.autoload_paths += %W(#{config.root}/lib/errors)
     config.eager_load_paths += ["#{config.root}/lib/errors"]
 
+    # Set schema storage to sql, since we are using postgres views
+    config.active_record.schema_format = :sql
+
     # Enable garbage collection instrumentation for new relic
     GC::Profiler.enable
   end

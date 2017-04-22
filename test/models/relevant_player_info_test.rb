@@ -9,9 +9,11 @@ class RelevantPlayerInfoTest < ActiveSupport::TestCase
     assert_equal(5000.0, info.least_stats_beaten_by)
   end
 
-  test 'returns nil without player info' do
+  test 'returns nil stats without player info' do
     player = create(:player)
-    assert_nil(player.relevant_player_info)
+    info = player.relevant_player_info
+    assert_not_nil(info)
+    assert_nil(info.xanax_taken)
   end
 
   test 'returns the most recent player info' do

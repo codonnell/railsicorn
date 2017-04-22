@@ -10,28 +10,45 @@ class PlayersControllerTest < ActionDispatch::IntegrationTest
 
   test 'returns unknown difficulty when attacker has no battle stats' do
     create_caller
-    target = create(:player, torn_id: 1)
+    target = create(:player)
     create(:battle_stats_update, player: target)
-    post '/players', params: { api_key: api_key, ids: [1] }, as: :json
-    assert_equal JSON.dump({ 1 => { difficulty: :unknown } }), @response.body
+    post '/players', params: { api_key: api_key, ids: [target.torn_id] }, as: :json
+    assert_equal({ target.torn_id.to_s => { 'difficulty' => 'unknown',
+      'most_stats_defended_against' => nil, 'least_stats_beaten_by' => nil} },
+      JSON.parse(@response.body))
   end
 
   test 'returns unknown difficulty when defender has no attack info' do
     user = create_caller
     create(:battle_stats_update, player: user.player)
-    create(:player, torn_id: 1, least_stats_beaten_by: nil, most_stats_defended_against: nil)
-    post '/players', params: { api_key: api_key, ids: [1] }, as: :json
-    assert_equal JSON.dump({ 1 => { difficulty: :unknown } }), @response.body
+    target = create(:player, least_stats_beaten_by: nil, most_stats_defended_against: nil)
+    post '/players', params: { api_key: api_key, ids: [target.torn_id] }, as: :json
+    assert_equal({ target.torn_id.to_s => { 'difficulty' => 'unknown',
+      'most_stats_defended_against' => nil, 'least_stats_beaten_by' => nil } },
+      JSON.parse(@response.body))
+  end
+
+  test 'returns the appropriate difficulty with info' do
+    user = create_caller
+    create(:battle_stats_update, strength: 10.0, dexterity: 10.0, speed: 10.0,
+      defense: 10.0, player: user.player)
+    target = create(:player, least_stats_beaten_by: 10.0, most_stats_defended_against: nil)
+    post '/players', params: { api_key: api_key, ids: [target.torn_id] }, as: :json
+    assert_equal({ target.torn_id.to_s => { 'difficulty' => 'easy',
+      'most_stats_defended_against' => nil, 'least_stats_beaten_by' => 10.0 } },
+      JSON.parse(@response.body))
   end
 
   test 'returns xanax, refill, and SE info' do
     create_caller
-    player = create(:player, torn_id: 1)
+    player = create(:player)
     create(:player_info_update, player: player, xanax_taken: 10, refills: 15,
       stat_enhancers_used: 20)
-    post '/players', params: { api_key: api_key, ids: [1] }, as: :json
-    assert_equal JSON.dump({ 1 => { difficulty: :unknown, xanax_taken: 10,
-      refills: 15, stat_enhancers_used: 20 } }), @response.body
+    post '/players', params: { api_key: api_key, ids: [player.torn_id] }, as: :json
+    assert_equal({ player.torn_id.to_s => { 'difficulty' => 'unknown',
+      'xanax_taken' => 10, 'refills' => 15, 'stat_enhancers_used' => 20,
+      'most_stats_defended_against' => nil, 'least_stats_beaten_by' => nil } },
+      JSON.parse(@response.body))
   end
 
   test 'returns unauthorized error when invalid faction' do
@@ -50,7 +67,7 @@ class PlayersControllerTest < ActionDispatch::IntegrationTest
 
   def create_caller
     faction = create(:faction, torn_id: 16628)
-    player = create(:player, torn_id: 1234, faction: faction)
+    player = create(:player, faction: faction)
     create(:user, api_key: api_key, player: player, faction: faction)
   end
 

@@ -16,6 +16,6 @@ class CreateRelevantPlayerInfoView < ActiveRecord::Migration[5.0]
   end
 
   def down
-    execute 'DROP VIEW relevant_player_info'
+    execute 'DROP VIEW relevant_player_infos'
   end
 end
