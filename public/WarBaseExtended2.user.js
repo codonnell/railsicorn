@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.4.39
+// @version     2.4.40
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -224,7 +224,7 @@ function applyFilter() {
   // Filter by userID
   if (warBaseFilter.status.userID) {
     //console.log($("#faction-main > ul > li:nth-child(16) > div.desc-wrap > div.viewport > div > ul > li:nth-child(4) > div.member.icons > span > a").data("data-placeholder"));
-    $list.find("div.member").find("spna.t-show").find("a.user.name").each(function(){
+    $list.find("div.member").find("span.t-show").find("a.user.name").each(function(){
       var userID = $(this).attr("href").split("=")[1];
       //userID     = parseInt(userID.substring(1,userID.length-1));
       if(userID < warBaseFilter.status.userID){
@@ -237,7 +237,7 @@ function applyFilter() {
   }
   // Filter by xanax used
   if (warBaseFilter.status.xanax) {
-    $list.find("div.member").find("spna.t-show").find("a.user.name").each(function(){
+    $list.find("div.member").find("span.t-show").find("a.user.name").each(function(){
       var userID = $(this).attr("href").split("=")[1];
       var totalXanax = enemyXan[userID];
       if(totalXanax > warBaseFilter.status.xanax){
@@ -822,7 +822,7 @@ function updateColor($li, id) {
 
 /**
  * Shows/Hides the control panel according to the current tab
- * @param {jQuery-Object} $element control panel
+span control panel
  */
 function addUrlChangeCallback($element) {
   var urlChangeCallback = function () {
@@ -872,7 +872,7 @@ function init() {
 }
 /**
  * Adds CSS to the HEAD of the document
- * @param {string} css
+span
  */
 function addCss(css) {
   var head = document.head,
