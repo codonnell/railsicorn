@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.4.38
+// @version     2.4.39
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -101,8 +101,8 @@ function addWarBaseFilter($panel) {
 
 
 function sort_list_by_id(a,b){
-  var userID_a = $(a).find("div.member").find("spna.t-show").find("a.user.name").attr("href").split("=")[1];
-  var userID_b = $(b).find("div.member").find("spna.t-show").find("a.user.name").attr("href").split("=")[1];
+  var userID_a = $(a).find("div.member").find("span.t-show").find("a.user.name").attr("href").split("=")[1];
+  var userID_b = $(b).find("div.member").find("span.t-show").find("a.user.name").attr("href").split("=")[1];
   userID_a     = parseInt(userID_a);
   userID_b     = parseInt(userID_b);
   if(warBaseFilter.status.young){
