@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn3
 // @namespace    sullengenie.Tornicorn3
-// @version      0.7
+// @version      0.8
 // @description  Estimates how difficult torn players are to attack
 // @author       sullengenie[1946152]
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
@@ -183,7 +183,6 @@ function updatePlayers() {
 }
 
 function main() {
-    observeFactionChange();
     if (!apiKey || apiKey === '') {
         updateApiKey();
     }
@@ -205,6 +204,7 @@ function observeWarBaseInit() {
                 if (mutation.addedNodes.item(i).className === 'faction-respect-wars-wp') {
                     console.log('War page initiated!');
                     main();
+                    observeFactionChange();
                 }
             }
         });
