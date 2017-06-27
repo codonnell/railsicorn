@@ -8,9 +8,9 @@ unless defined?(Rails::Console) || File.split($0).last == 'rake'
     UpdateFactionAttacksJob.perform_now
   end
 
-  # scheduler.every '30s' do
-  #   UpdateStalePlayersJob.perform_now
-  # end
+  scheduler.every '30s' do
+    UpdateStalePlayersJob.perform_now
+  end
 
   scheduler.every '1m' do
     IncRequestsAvailableJob.perform_now
