@@ -4,6 +4,7 @@ class PlayerInfoCoercer
   end
 
   def call
+    coerce_job
     @info = rename_keys(@response, key_coercions)
     coerce_name
     coerce_last_action
@@ -11,7 +12,6 @@ class PlayerInfoCoercer
     coerce_donator
     coerce_refills
     coerce_signup
-    coerce_job
     remove_excess_attributes
     @info
   end
@@ -39,9 +39,8 @@ class PlayerInfoCoercer
   end
 
   def coerce_job
-    if @info[:job].nil?
-      @info[:position] = 'None'
-      @info[:company_id] = 0
+    if @response[:job].nil?
+      @response[:job] = { position: 'None', company_id: 0 }
     end
   end
 
