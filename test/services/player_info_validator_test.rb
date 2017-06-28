@@ -209,4 +209,10 @@ class PlayerInfoValidatorTest < ActiveSupport::TestCase
     min_schema_h[:personalstats] = {}
     assert PlayerInfoValidator.new(min_schema_h).valid?
   end
+
+  test 'nil job is valid' do
+    min_schema_h = valid_schema_h.clone
+    min_schema_h[:job] = nil
+    assert PlayerInfoValidator.new(min_schema_h).valid?
+  end
 end

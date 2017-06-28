@@ -22,9 +22,11 @@ class PlayerInfoValidator < Validator
     end
     # Now this can be a string or an array of strings. We don't use it, so ignore it for now.
     # required(:status).each(:str?)
-    required(:job).schema do
-      required(:company_id) { int? & gteq?(0) }
-      required(:position).value(:str?)
+    required(:job).maybe do
+      schema do
+        required(:company_id) { int? & gteq?(0) }
+        required(:position).value(:str?)
+      end
     end
     required(:faction).schema do
       required(:position).value(:str?)
