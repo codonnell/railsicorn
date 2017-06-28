@@ -11,6 +11,7 @@ class PlayerInfoCoercer
     coerce_donator
     coerce_refills
     coerce_signup
+    coerce_job
     remove_excess_attributes
     @info
   end
@@ -35,6 +36,13 @@ class PlayerInfoCoercer
 
   def coerce_refills
     @info[:refills] ||= 0
+  end
+
+  def coerce_job
+    if @info[:job].nil?
+      @info[:position] = 'None'
+      @info[:company_id] = 0
+    end
   end
 
   def coerce_signup

@@ -356,4 +356,9 @@ class PlayerInfoCoercerTest < ActiveSupport::TestCase
   test 'coerces nil refills' do
     assert_equal(0, PlayerInfoCoercer.new(min_resp.merge({ refills: nil })).call[:refills])
   end
+
+  test 'coerces nil job' do
+    assert_equal(0, PlayerInfoCoercer.new(min_resp.merge({ job: nil })).call[:company_id])
+    assert_equal('None', PlayerInfoCoercer.new(min_resp.merge({ job: nil })).call[:position])
+  end
 end
