@@ -23,7 +23,7 @@ class AttacksValidator < Validator
         required(:respect_gain) { int? > eql?(0) | float? & gteq?(0.0) }
         required(:result).value(included_in?:
           ['Hospitalize', 'Stalemate', 'Leave', 'Mug', 'Lose', 'Run away',
-           'Timeout'])
+           'Timeout', 'Escape'])
       end
     end
   end
