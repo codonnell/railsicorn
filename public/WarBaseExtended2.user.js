@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.6.2
+// @version     2.6.3
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -445,7 +445,7 @@ function highLightBonus(){
   var activeFaction = $('ul.f-war-list > li.act').find('a.t-blue.h').text();
   localStorage.factions = JSON.stringify(factions);
   $('.member-list > li').each(function() {
-    if (factions.includes(activeFaction)) {
+    if (factions !== null && factions.includes(activeFaction)) {
       $(this).find('div.member').css('background-color', 'rgba(166, 218, 255, 1)');
     } else {
       $(this).find('div.member').css('background-color', 'inherit');
