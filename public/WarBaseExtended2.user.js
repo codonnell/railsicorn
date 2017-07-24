@@ -5,7 +5,7 @@
 // @description Brings back the old war base layout, adds a filter to the war base, enables enemy tagging
 // @include     *.torn.com/factions.php?step=your*
 // @include     *.torn.com/profiles.php?XID=*
-// @version     2.5.2
+// @version     2.6.0
 // @require      https://code.jquery.com/jquery-2.2.0.min.js
 // @grant       GM_addStyle
 // ==/UserScript==
@@ -649,7 +649,7 @@ function addFilterPanel($panel) {
     //$panel.prepend(button3)
     $panel.append("<br><b>Select Bonus Factions (will be highlighted in blue, hold ctrl to select multiple factions) </b><div id='bonusFaction'><select id='selectFaction' multiple></select></div>");
     //Get list of factions
-    var factions = $('div.f-right').find('a.t-blue.h');
+    var factions = $('ul.f-war-list').find('a.t-blue.h');
     var option = '';
 
     $(factions).each(function(){
@@ -719,6 +719,9 @@ function remainingHospitalTime(text) {
 
 
 function addEnemyXanRefSE() {
+   enemyXan = JSON.parse(localStorage.vinkuunEnemyXan || '{}');
+   enemyRef = JSON.parse(localStorage.vinkuunEnemyRef || '{}');
+   enemySE = JSON.parse(localStorage.vinkuunEnemySE || '{}');
     if($('#iconTray').hasClass('sml')){
         var size = 12;
     } else if($('#iconTray').hasClass('big')) {
@@ -738,7 +741,8 @@ function addEnemyXanRefSE() {
         //remove married icons
         $this.find('#icon8').remove();
         var id = $this.find('.user.name').eq(0).attr('href').match(/XID=(\d+)/)[1];
-        $this.find('.member-icons > #iconTray').append('<li class="iconShow" style="display:inline-block;background-image: url(\'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/26/pill.png\');background-size: ' + size  + 'px ' + size + 'px" title="Xanax taken: ' + enemyXan[id] + '"></li');
+        // $this.find('.member-icons > #iconTray').append('<li class="iconShow" style="display:inline-block;background-image: url(\'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/26/pill.png\');background-size: ' + size  + 'px ' + size + 'px" title="Xanax taken: ' + enemyXan[id] + '"></li');
+      $this.find('.member-icons > #iconTray').append('<li class="iconShow" style="display:inline-block;background-image: url(\'https://cdn1.iconfinder.com/data/icons/blogger-4/19/27.png\');background-size: ' + size  + 'px ' + size + 'px" title="Xanax taken: ' + enemyXan[id] + '"></li');
         $this.find('.member-icons > #iconTray').append('<li class="iconShow" style="display:inline-block;background-image: url(\'https://cdn0.iconfinder.com/data/icons/social-productivity-line-art-2/128/refresh-2-16.png\');background-size: ' + size  + 'px ' + size + 'px" title="Refills used: ' + enemyRef[id] + '"></li>');
         $this.find('.member-icons > #iconTray').append('<li class="iconShow" style="display:inline-block;background-image: url(\'https://cdn4.iconfinder.com/data/icons/mosaicon-04/512/chart-16.png\');background-size: ' + size  + 'px ' + size + 'px" title="SEs used: ' + enemySE[id] + '"></li>');
 
@@ -936,6 +940,7 @@ function applyFilterOnFactionChange() {
                     if (mutation.addedNodes.item(i).className === 'descriptions') {
                         console.log('Faction change!');
                       addEnemyTagging();
+                      addEnemyXanRefSE();
                         applyFilter();
                     }
                 }
