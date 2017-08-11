@@ -12,7 +12,8 @@ class PlayerInfoValidator < Validator
     required(:forum_posts).maybe(:int?)
     required(:karma) { int? & gteq?(0) }
     required(:role).value(included_in?:
-      %w(Admin Officer Secretary Moderator Helper NPC Civilian Reporter))
+      ['Admin', 'Officer', 'Secretary', 'Moderator', 'Helper', 'NPC',
+        'Civilian', 'Reporter', 'Wiki Contributor', 'Wiki Editor'])
     required(:donator).value(included_in?: [0, 1])
     required(:player_id) { int? & gt?(0) }
     required(:name) { int? | str? }
