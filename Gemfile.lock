@@ -127,6 +127,7 @@ GEM
     public_suffix (2.0.5)
     puma (3.9.1)
     rack (2.0.3)
+    rack-cors (1.0.1)
     rack-protection (2.0.0)
       rack
     rack-test (0.6.3)
@@ -228,6 +229,7 @@ DEPENDENCIES
   pry
   pry-doc
   puma (~> 3.0)
+  rack-cors
   rails (~> 5.0.1)
   rest-client (~> 2.0)
   rubocop
