@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn4
 // @namespace    sullenTornicorn4
-// @version      0.3
+// @version      0.4
 // @description  Automatically calculate the difficulty of attacking a target
 // @author       sullengenie [1946152]
 // @match        *://*.torn.com/profiles.php?XID=*
@@ -53,6 +53,11 @@
       .then(() => {
         insertBefore(apiInputContainer, topProfileContainer());
         document.getElementById('sullen-api-key-button').onclick = submitApiKey;
+        document.getElementById('sullen-api-key-input').onkeypress = (event) => {
+          if (event.key === 'Enter') {
+            submitApiKey();
+          }
+        };
         // console.log('Created api key input');
       });
   }
