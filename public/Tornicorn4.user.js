@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn4
 // @namespace    sullenTornicorn4
-// @version      0.1
+// @version      0.2
 // @description  Automatically calculate the difficulty of attacking a target
 // @author       sullengenie [1946152]
 // @match        *://*.torn.com/profiles.php?XID=*
@@ -53,7 +53,7 @@
       .then(() => {
         insertBefore(apiInputContainer, topProfileContainer());
         document.getElementById('sullen-api-key-button').onclick = submitApiKey;
-        console.log('Created api key input');
+        // console.log('Created api key input');
       });
   }
 
@@ -62,7 +62,7 @@
   }
 
   function hideApiKeyInput() {
-    console.log('Hide api key input');
+    // console.log('Hide api key input');
     document.getElementById('api-key-container-style').innerText = apiKeyInputStyle({hidden: true});
     removeApiKeyWarning();
   }
@@ -105,14 +105,14 @@ If this is in error, contact sullengenie [1946152].</p>`),
   }
 
   function handleInvalidApiKey() {
-    console.log('Invalid API key');
+    // console.log('Invalid API key');
     GM_deleteValue('apiKey');
     showApiKeyInput();
     addApiKeyWarning();
   }
 
   function handleUnauthorizedFaction() {
-    console.log('Unauthorized faction');
+    // console.log('Unauthorized faction');
     waitForPageLoad()
       .then(() => insertBefore(createHtml(`<p>Unauthorized faction.
 If this is in error, please contact sullengenie [1946152].</p>`),
@@ -138,8 +138,8 @@ If this is in error, please contact sullengenie [1946152].</p>`),
   }
 
   function handlePlayerInfoResponse(data) {
-    console.log('Player info response:');
-    console.log(data);
+    // console.log('Player info response:');
+    // console.log(data);
     if (data.error === 'Unauthorized faction') {
       waitForPageLoad().then(() => handleUnauthorizedFaction());
     } else if (data.error && data.error.includes('Unknown API key')) {
@@ -176,7 +176,7 @@ If this is in error, please contact sullengenie [1946152].</p>`),
 
   function main() {
     apiKey = GM_getValue('apiKey');
-    console.log('apiKey: ' + apiKey);
+    // console.log('apiKey: ' + apiKey);
     if (apiKey !== undefined) {
       updatePlayerInfo();
     }
