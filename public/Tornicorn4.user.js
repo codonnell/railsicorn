@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tornicorn4
 // @namespace    sullenTornicorn4
-// @version      0.2
+// @version      0.3
 // @description  Automatically calculate the difficulty of attacking a target
 // @author       sullengenie [1946152]
 // @match        *://*.torn.com/profiles.php?XID=*
@@ -70,7 +70,7 @@
   function addApiKeyWarning() {
     apiKeyInputCreated.then(() =>
                             insertBefore(createHtml(`<p>Your current API key is invalid. Please input a valid key.
-If this is in error, contact sullengenie [1946152].</p>`),
+If this is in error, contact <a href="https://www.torn.com/profiles.php?XID=1946152">sullengenie [1946152]</a>.</p>`),
                                          document.getElementById('sullen-api-key-input').previousElementSibling));
   }
 
@@ -115,7 +115,7 @@ If this is in error, contact sullengenie [1946152].</p>`),
     // console.log('Unauthorized faction');
     waitForPageLoad()
       .then(() => insertBefore(createHtml(`<p>Unauthorized faction.
-If this is in error, please contact sullengenie [1946152].</p>`),
+If this is in error, please contact <a href="https://www.torn.com/profiles.php?XID=1946152">sullengenie [1946152]</a>.</p>`),
                                topProfileContainer()));
   }
 
