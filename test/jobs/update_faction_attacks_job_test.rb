@@ -42,8 +42,11 @@ class UpdateFactionAttacksJobTest < ActiveJob::TestCase
     faction = create(:faction, api_key: 'api_key', torn_id: 13)
     player = create(:player, torn_id: 12, faction: faction)
     assert(player.attacks.empty?)
+    assert_nil(faction.last_attack_update)
     UpdateFactionAttacksJob.perform_now
     assert_not(player.attacks.empty?)
     assert_requested(:get, request.url)
+    faction.reload
+    assert(faction.last_attack_update && faction.last_attack_update > 5.minutes.ago)
   end
 end

@@ -129,7 +129,8 @@ CREATE TABLE factions (
     torn_id integer,
     api_key character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    last_attack_update timestamp without time zone
 );
 
 
@@ -856,6 +857,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170422181301'),
 ('20170422181932'),
 ('20170626051038'),
-('20171005165029');
+('20171005165029'),
+('20171005170708');
 
 

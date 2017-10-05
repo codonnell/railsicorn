@@ -78,5 +78,6 @@ FactoryGirl.define do
   factory :faction do
     torn_id { generate(:faction_id) }
     api_key { generate(:api_key) }
+    last_attack_update nil
   end
 end
