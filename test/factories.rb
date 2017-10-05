@@ -25,6 +25,7 @@ FactoryGirl.define do
     association :defender, factory: :player
     result "Hospitalize"
     respect_gain 1.5
+    group_attack false
   end
 
   sequence :player_id do |n|

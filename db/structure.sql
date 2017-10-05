@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.8
+-- Dumped by pg_dump version 9.5.8
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -30,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ar_internal_metadata (
@@ -42,7 +46,7 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: attacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: attacks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE attacks (
@@ -54,7 +58,8 @@ CREATE TABLE attacks (
     defender_id integer,
     result character varying,
     respect_gain double precision,
-    "timestamp" timestamp without time zone
+    "timestamp" timestamp without time zone,
+    group_attack boolean DEFAULT false
 );
 
 
@@ -78,7 +83,7 @@ ALTER SEQUENCE attacks_id_seq OWNED BY attacks.id;
 
 
 --
--- Name: battle_stats_updates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: battle_stats_updates; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE battle_stats_updates (
@@ -116,7 +121,7 @@ ALTER SEQUENCE battle_stats_updates_id_seq OWNED BY battle_stats_updates.id;
 
 
 --
--- Name: factions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: factions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE factions (
@@ -148,7 +153,7 @@ ALTER SEQUENCE factions_id_seq OWNED BY factions.id;
 
 
 --
--- Name: player_info_updates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: player_info_updates; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE player_info_updates (
@@ -305,7 +310,7 @@ ALTER SEQUENCE player_info_updates_id_seq OWNED BY player_info_updates.id;
 
 
 --
--- Name: players; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: players; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE players (
@@ -490,7 +495,7 @@ CREATE VIEW relevant_player_infos AS
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -499,7 +504,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -574,7 +579,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -582,7 +587,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: attacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: attacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY attacks
@@ -590,7 +595,7 @@ ALTER TABLE ONLY attacks
 
 
 --
--- Name: battle_stats_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: battle_stats_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY battle_stats_updates
@@ -598,7 +603,7 @@ ALTER TABLE ONLY battle_stats_updates
 
 
 --
--- Name: factions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: factions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY factions
@@ -606,7 +611,7 @@ ALTER TABLE ONLY factions
 
 
 --
--- Name: player_info_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: player_info_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY player_info_updates
@@ -614,7 +619,7 @@ ALTER TABLE ONLY player_info_updates
 
 
 --
--- Name: players_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: players_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY players
@@ -622,7 +627,7 @@ ALTER TABLE ONLY players
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -630,7 +635,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -638,105 +643,105 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: index_attacks_on_attacker_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_attacks_on_attacker_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_attacks_on_attacker_id ON attacks USING btree (attacker_id);
 
 
 --
--- Name: index_attacks_on_defender_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_attacks_on_defender_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_attacks_on_defender_id ON attacks USING btree (defender_id);
 
 
 --
--- Name: index_attacks_on_timestamp; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_attacks_on_timestamp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_attacks_on_timestamp ON attacks USING btree ("timestamp");
 
 
 --
--- Name: index_attacks_on_torn_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_attacks_on_torn_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_attacks_on_torn_id ON attacks USING btree (torn_id);
 
 
 --
--- Name: index_battle_stats_updates_on_player_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_battle_stats_updates_on_player_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_battle_stats_updates_on_player_id ON battle_stats_updates USING btree (player_id);
 
 
 --
--- Name: index_battle_stats_updates_on_timestamp; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_battle_stats_updates_on_timestamp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_battle_stats_updates_on_timestamp ON battle_stats_updates USING btree ("timestamp");
 
 
 --
--- Name: index_factions_on_torn_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_factions_on_torn_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_factions_on_torn_id ON factions USING btree (torn_id);
 
 
 --
--- Name: index_player_info_updates_on_player_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_player_info_updates_on_player_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_player_info_updates_on_player_id ON player_info_updates USING btree (player_id);
 
 
 --
--- Name: index_player_info_updates_on_spouse_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_player_info_updates_on_spouse_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_player_info_updates_on_spouse_id ON player_info_updates USING btree (spouse_id);
 
 
 --
--- Name: index_player_info_updates_on_timestamp; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_player_info_updates_on_timestamp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_player_info_updates_on_timestamp ON player_info_updates USING btree ("timestamp");
 
 
 --
--- Name: index_players_on_faction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_players_on_faction_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_players_on_faction_id ON players USING btree (faction_id);
 
 
 --
--- Name: index_players_on_torn_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_players_on_torn_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_players_on_torn_id ON players USING btree (torn_id);
 
 
 --
--- Name: index_players_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_players_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_players_on_user_id ON players USING btree (user_id);
 
 
 --
--- Name: index_users_on_api_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_api_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_api_key ON users USING btree (api_key);
 
 
 --
--- Name: index_users_on_faction_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_faction_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_faction_id ON users USING btree (faction_id);
@@ -810,9 +815,9 @@ ALTER TABLE ONLY attacks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES
+INSERT INTO "schema_migrations" (version) VALUES
 ('20170107214937'),
 ('20170107214959'),
 ('20170107215012'),
@@ -850,6 +855,7 @@ INSERT INTO schema_migrations (version) VALUES
 ('20170422172932'),
 ('20170422181301'),
 ('20170422181932'),
-('20170626051038');
+('20170626051038'),
+('20171005165029');
 
 

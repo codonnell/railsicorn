@@ -75,7 +75,11 @@ class AttacksUpdater
           request = ApiRequest.player_events(user.api_key)
           api_caller = ApiCaller.new(request, RateLimiter.new(user))
           events = api_caller.call
-          update_difficulty(attack) unless GroupAttackChecker.new(events, attack).is_group_attack?
+          if GroupAttackChecker.new(events, attack).is_group_attack?
+            attack.group_attack = true
+          else
+            update_difficulty(attack)
+          end
         end
       end
     end
