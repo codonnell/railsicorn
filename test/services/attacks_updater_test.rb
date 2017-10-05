@@ -1,6 +1,18 @@
 require 'test_helper'
 
 class AttacksUpdaterTest < ActiveSupport::TestCase
+  def empty_events
+    { events: {}}
+  end
+  def group_attack_events
+    { events:
+      { :"1" =>
+        {
+          timestamp: 1050,
+          seen: 0,
+          event: '<a href="player.php?XID=12>twiddles</a> and (42 others) attacked <a href="player.php?XID=14">twoodled</a> and mugged her.'
+        } } }
+  end
   def generic_attacks
     { attacks:
       { :"1" =>
@@ -66,8 +78,16 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
     battle_stats_request
   end
 
+  def stub_events_requests
+    events_request = ApiRequest.player_events('api_key')
+    stub_request(:get, events_request.url)
+      .to_return(body: JSON.dump(empty_events))
+    events_request
+  end
+
   test 'creates valid attacks and their associated players' do
     stub_attack_requests
+    stub_events_requests
     api_caller = ApiCaller.new(ApiRequest.player_attacks('api_key'),
       NoRateLimiter.new)
     updater = AttacksUpdater.new(api_caller)
@@ -85,6 +105,7 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
 
   test 'does not update existing attacks' do
     attack_request = stub_attack_requests
+    stub_events_requests
     api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
     updater = AttacksUpdater.new(api_caller)
     create(:attack, torn_id: 1, attacker_id: nil)
@@ -98,6 +119,7 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
     create(:user, player: player, api_key: 'api_key')
     attack_request = stub_attack_requests
     stub_battle_stats_requests
+    stub_events_requests
     api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
     AttacksUpdater.new(api_caller).call
     assert_not(player.battle_stats_updates.empty?)
@@ -105,10 +127,24 @@ class AttacksUpdaterTest < ActiveSupport::TestCase
       Attack.find_by(torn_id: 1).timestamp)
   end
 
+  test 'does not update difficulties for group attacks' do
+    events_request = ApiRequest.player_events('api_key')
+    stub_request(:get, events_request.url)
+    .to_return(body: JSON.dump(group_attack_events))
+    player1 = create(:player, torn_id: 12)
+    create(:user, player: player1, api_key: 'api_key')
+    attack_request = stub_attack_requests
+    stub_battle_stats_requests
+    api_caller = ApiCaller.new(attack_request, NoRateLimiter.new)
+    AttacksUpdater.new(api_caller).call
+    assert_nil Player.find_by(torn_id: 14)[:least_stats_beaten_by]
+  end
+
   # Should probably test all of the branches of this, but UGH
   # There has to be a better way, maybe programmatically generating attack and
   # battle stat stubs
   test 'updates difficulty measures' do
+    stub_events_requests
     player1 = create(:player, torn_id: 12)
     create(:user, player: player1, api_key: 'api_key')
     attack_request = stub_attack_requests

@@ -66,7 +66,19 @@ class AttacksUpdater
   end
 
   def update_difficulties(attacks)
-    attacks.each { |attack| update_difficulty(attack) }
+    maybe_group_attacks = attacks.select { |attack| attack.attacker && attack.attacker.active_user? }
+    Rails.application.executor.wrap do
+      Parallel.each(maybe_group_attacks,
+        in_threads: Rails.application.config.request_threads) do |attack|
+        ActiveRecord::Base.connection_pool.with_connection do
+          user = attack.attacker.user
+          request = ApiRequest.player_events(user.api_key)
+          api_caller = ApiCaller.new(request, RateLimiter.new(user))
+          events = api_caller.call
+          update_difficulty(attack) unless GroupAttackChecker.new(events, attack).is_group_attack?
+        end
+      end
+    end
   end
 
   def update_difficulty(attack)

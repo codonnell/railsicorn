@@ -174,12 +174,6 @@ class PlayerInfoValidatorTest < ActiveSupport::TestCase
     assert PlayerInfoValidator.new(valid_schema_h).valid?
   end
 
-  test 'excess keys are invalid' do
-    extra_k = valid_schema_h
-    extra_k[:personalstats][:extra] = 'foo'
-    assert_not PlayerInfoValidator.new(extra_k).valid?
-  end
-
   test 'string status is valid' do
     string_status = valid_schema_h
     string_status[:status] = 'Traveling'

@@ -31,6 +31,10 @@ class ApiRequest
     new(path: :user, selections: [:battlestats], api_key: api_key)
   end
 
+  def self.player_events(api_key)
+    new(path: :user, selections: [:events], api_key: api_key)
+  end
+
   private
 
   def root_url
